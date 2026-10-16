@@ -366,3 +366,23 @@ Sources:
 - Target-specific static analysis: **BLOCKED** until the exact IPSW is acquired and its identity verified.
 - Physical root/SSH or reboot persistence on the user's iPhone 16: **NOT VALIDATED**.
 - Overall completion: **NOT PASS**. CI is not yet fully green for the exact feature commit at this observation.
+
+
+## CI result update — 2026-10-17 (after completion)
+
+The previously in-progress run for commit `57560db9974f39688a165064c272a5f8a23ee3c1` has completed:
+- KernelScope `38974006158`: **PASS**.
+- Swift CI `38974001418`: **PASS**.
+- Swift and Firmware Audit CI `38974006117`: **FAIL**; failed step is **Test firmware audit tool**.
+- The failure means the full feature-branch CI is **NOT GREEN**. PR #1 remains open and unmerged.
+- PR #2's standalone correction CI had passed earlier, but its correction has not yet been merged into `main` or incorporated into PR #1's head. The separate passing PR does not override the failure observed on this feature head.
+
+A documentation-only follow-up commit `8d5544c43b431bb0f2d51aec148639ba812fbf56` was pushed after recording the then-current in-progress state. Its Swift CI run `38974105579` was **QUEUED** at the time of this update; this queued run is not evidence that the firmware-audit failure is fixed.
+
+Run links:
+- https://github.com/ejjjkkjlkkj/ios/actions/runs/38974006117
+- https://github.com/ejjjkkjlkkj/ios/actions/runs/38974006158
+- https://github.com/ejjjkkjlkkj/ios/actions/runs/38974001418
+- https://github.com/ejjjkkjlkkj/ios/actions/runs/38974105579
+
+Required next code action: rebase/port the already CI-tested missing-manifest status correction into the PhoneBridge branch through a reviewed change, then rerun the complete workflow on the resulting exact head. Do not mark overall CI PASS until that matching run succeeds.
