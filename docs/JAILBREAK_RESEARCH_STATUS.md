@@ -826,3 +826,39 @@ Sources:
 - Public, reproducible physical jailbreak for iPhone 16 / iPhone17,3 / T8140 / 24A446: `NOT_FOUND_IN_REVIEWED_SOURCES`.
 - Physical root SSH, arbitrary DEB installation, and untethered reboot persistence for the target: `NOT_VALIDATED`.
 - No physical device was modified, no firmware was flashed, and no PR was merged in this research pass.
+
+
+## Additional GitHub/web research — 2026-10-17 (usbliter8 fork scope and target-specific status)
+
+### Cross-check: usbliter8-fun is a separate, narrowly scoped project
+
+The public `34306/usbliter8-fun` repository describes its iOS 27 usbliter8 work as **iPhone 11 Pro only**. Its warning says that restoring the custom firmware can erase the device and break SEP, passcode, Wi-Fi, baseband, Bluetooth (partially), and Apple services. It says other devices require finding correct offsets. This is not a safe or validated route for the target iPhone 16.
+
+Source: https://github.com/34306/usbliter8-fun
+
+| Claim | Status | Assessment |
+|---|---|---|
+| A second public usbliter8-based iOS 27 project exists | `REPOSITORY_FOUND` | Public repository and source tree found |
+| It supports iPhone17,3 / T8140 / 24A446 | `NOT_SUPPORTED_BY_REPO` | README says iPhone 11 Pro only; other hardware needs offsets |
+| It preserves normal device functionality | `WARNED_UNSAFE` | README warns about loss of SEP/passcode/Wi-Fi/baseband and Apple services |
+| It supplies an acceptable solution for this target | `NO` | Wrong hardware scope and destructive/limited custom-firmware path |
+
+This reinforces the distinction between “a project reports an iOS 27 boot/jailbreak on one older device” and “a reliable jailbreak for this exact iPhone 16.” Do not restore its custom firmware to a primary device.
+
+### Exact target and public status cross-check
+
+The current firmware listing identifies the target as iPhone 16 `iPhone17,3`, board `D47AP`, platform `t8140`, with iOS 27.0.1 build `24A446`. A current compatibility/status page says no public jailbreak is known for iOS 27.0.1 on iPhone 16 Pro; that is a different model (`iPhone17,1`) and is corroborative context only, not direct evidence about `iPhone17,3`.
+
+Sources:
+- https://ipswfiles.com/iphone/iPhone17%2C3
+- https://www.applefirmwares.com/firmware/iPhone17%2C1/27.0.1
+
+### Research status after this cross-check
+
+- Public usbliter8 work: `DEVICE_SPECIFIC_EXPERIMENTAL`; published scope is iPhone 11 / 11 Pro, with severe functionality warnings.
+- ABrake27: `STATIC_RESEARCH_LEAD_ONLY`; its documented firmware comparison is iPhone14,5, and its Developer Mode flow is explicitly not a jailbreak.
+- vphone-cli / darwin-vm: `VM_ONLY`; custom-guest root or boot success is not physical-device evidence.
+- Calif demonstration: `REPORTED_DEMO_NO_PUBLIC_TOOL_FOUND`; different reported device, exploit details/tool not public in reviewed sources.
+- Public, reproducible physical jailbreak for iPhone16 `iPhone17,3 / D47AP / T8140 / 24A446`: `NOT_FOUND_IN_REVIEWED_SOURCES`.
+- Physical root SSH, arbitrary DEB installation, and reboot persistence on this target: `NOT_VALIDATED`.
+- No device was modified, no firmware was restored, and no PR was merged in this pass.
