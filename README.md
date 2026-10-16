@@ -18,6 +18,17 @@ PhoneBridge vise à devenir un centre de contrôle complet de l’iPhone : appli
 - Accessibilité VoiceOver, Dynamic Type, navigation clavier compatible et rapports explicites PASS / FAIL / PARTIAL / BLOCKED / NOT VALIDATED.
 - Confidentialité : lecture seule par défaut, consentement avant partage, aucun secret dans les logs et aucune transmission cloud par défaut.
 
+## Outil de dissection firmware (nouveau)
+
+Le dossier Tools/firmware-audit/ contient un outil Python 3 autonome, sans dépendance tierce, qui inventorie un IPSW en lecture seule : BuildManifest.plist, version/build, modèles de produit pris en charge, chemins de kernelcache, tailles, SHA-256 et intégrité CRC de l'archive.
+
+```sh
+python Tools/firmware-audit/firmware_audit.py /chemin/firmware.ipsw --output rapport.json
+python -m unittest discover -s Tools/firmware-audit -p 'test_*.py' -v
+```
+
+Cet outil ne déchiffre, ne modifie ni n'exploite le firmware. Un inventaire ne prouve ni la compatibilité avec un iPhone physique, ni l'exploitabilité du noyau. Voir le guide Tools/firmware-audit/README.md. La CI exécute les tests Swift et Python.
+
 ## Limites importantes
 
 Une application iOS standard ne peut pas obtenir librement un shell root, activer un serveur SSH système, contourner la signature de code ou installer arbitrairement n’importe quelle application. **SSH root sans jailbreak n’est possible que si l’appareil dispose déjà d’un service root autorisé**; l’application ne peut pas créer ce privilège. Les installations IPA restent dépendantes de méthodes de signature/distribution compatibles. Les fichiers DEB ne sont pas des applications installables normalement sur iOS standard.
