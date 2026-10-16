@@ -4,12 +4,18 @@ on:
   push:
     paths:
       - "tools/kernelscope.py"
-      - "tests/test_kernelscope.py"
+      - "tools/retrieve_kernelcache.py"
+      - "tests/**"
+      - "docs/KERNELSCOPE.md"
+      - "docs/IPHONE16_IOS27_KERNEL.md"
       - ".github/workflows/kernelscope.yml"
   pull_request:
     paths:
       - "tools/kernelscope.py"
-      - "tests/test_kernelscope.py"
+      - "tools/retrieve_kernelcache.py"
+      - "tests/**"
+      - "docs/KERNELSCOPE.md"
+      - "docs/IPHONE16_IOS27_KERNEL.md"
       - ".github/workflows/kernelscope.yml"
   workflow_dispatch:
 
@@ -27,6 +33,6 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax check
-        run: python -m py_compile tools/kernelscope.py tests/test_kernelscope.py
+        run: python -m py_compile tools/kernelscope.py tools/retrieve_kernelcache.py tests/test_kernelscope.py tests/test_retrieve_kernelcache.py
       - name: Unit tests
-        run: python -m unittest discover -s tests -p "test_kernelscope.py" -v
+        run: python -m unittest discover -s tests -p "test_*.py" -v
