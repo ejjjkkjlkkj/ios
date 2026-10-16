@@ -238,3 +238,40 @@ The latest reporting on Calif's Hexacon demonstration still describes an iPhone 
 - Liter8 upstream: https://github.com/Xplo8E/Liter8
 
 Target-device jailbreak and physical root SSH remain `NOT_VALIDATED`. No IPSW was downloaded or analyzed in this work session, and no physical device test was performed.
+
+
+## Follow-up — CI resolution and target evidence — 2026-10-17
+
+### Firmware-audit correction validated
+
+The PR #2 CI run has now completed successfully:
+- Run: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973637302
+- Result: `success`
+- The job passed Swift package validation/tests, firmware-audit compilation and firmware-audit tests, including the missing-manifest regression test, plus whitespace checks.
+- PR #2 remains **OPEN / NOT MERGED**. This validates the proposed fix against its PR baseline; it does not mean the correction is already on `main`.
+
+PR: https://github.com/ejjjkkjlkkj/ios/pull/2  
+Fix commit: `4a30bf2b94461c440678ab8a5c9928f979d6101d`
+
+### Latest public target check
+
+A current third-party firmware listing identifies the target as iPhone 16 `iPhone17,3`, board `D47AP`, platform `t8140`, and lists build `24A446` as signed. The same listing says no public jailbreak is known for this exact target/build. This is a catalog report, **not** independent verification of Apple's signing service or the authenticity of a local IPSW.
+
+The Calif demonstration remains specific to iPhone 18 Pro / `iPhone19,2` / `T8160`; the matching build number `24A446` does not establish cross-device exploit compatibility. Liter8's upstream README still explicitly claims iPhone 11 / `n104ap` support, not iPhone 16.
+
+Sources:
+- Target firmware listing: https://www.applefirmwares.com/firmware/iPhone17%2C3/27.0.1
+- Calif demo coverage, 2026-10-16: https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- Liter8 upstream support matrix: https://github.com/Xplo8E/Liter8
+
+### Current status after this update
+
+- PR #2 firmware-audit correction CI: **PASS**.
+- PR #2 merged into `main`: **NO**.
+- Exact target IPSW downloaded, SHA-256 recorded, and BuildManifest checked in this session: **NOT DONE**.
+- IPSW cryptographic authenticity verified: **NOT_VALIDATED**.
+- Public reproducible jailbreak for iPhone 16 / `T8140` / iOS 27.0.1: **NOT_FOUND** in sources reviewed.
+- Physical root SSH / reboot persistence on the target iPhone 16: **NOT_VALIDATED**.
+- Overall PhoneBridge feature-branch CI: **NOT_DECLARED_GREEN** until a matching complete run is observed after the firmware-audit fix is integrated and the relevant workflows pass.
+
+Next concrete task: obtain the exact target IPSW in a controlled environment, record its local SHA-256 and byte size, then run the repository's read-only target-firmware verifier. Do not restore or modify the device as part of this audit.
