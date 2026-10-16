@@ -743,3 +743,42 @@ This is a time-of-check snapshot, not proof that all CI has passed. Recheck the 
 - Public reproducible physical jailbreak for iPhone17,3 / T8140 / 24A446: `NOT_FOUND_IN_REVIEWED_SOURCES`.
 - Physical root SSH, arbitrary DEB installation, and reboot persistence: `NOT_VALIDATED`.
 - No device was modified, no firmware was flashed, and no PR was merged in this research pass.
+
+
+## Additional GitHub research — 2026-10-17 (ABrake27, W0lfSword, and VM evidence)
+
+### ABrake27: useful firmware-diff lead, not a jailbreak
+
+The current README for `vvirei333/ABrake27` describes a Linux-native toolkit for comparing iOS 27.0.1 with 27.2, inspecting AMFI dispatch behavior, and enabling Developer Mode through Apple's stock lockdown protocol. The README explicitly labels that flow **“no jailbreak, no unsigned code.”** Its ASTC/DDS/ImageIO path is described as structurally reachable, but behavioral confirmation of the MediaAnalysis delivery path remains open. The documented firmware diff is for iPhone14,5, not the target iPhone17,3.
+
+| Claim | Status | Reason |
+|---|---|---|
+| ABrake27 offers public iOS 27 reverse-engineering material | `REPOSITORY_FOUND` | Public README and research documents |
+| Developer Mode activation equals jailbreak/root | `FALSE` | The project explicitly says the flow is not a jailbreak and uses the stock lockdown protocol |
+| ASTC/DDS candidate is a demonstrated exploitable vulnerability | `NOT_VALIDATED` | README says behavioral confirmation is still needed |
+| ABrake27 demonstrates a physical iPhone17,3 / T8140 chain | `NOT_FOUND` | Its documented diff target is iPhone14,5; no target chain shown |
+
+Source: https://github.com/vvirei333/ABrake27
+
+### W0lfSword: version range does not reach the target
+
+`kaffeindecaf/W0lfSword` documents support through iOS 26.0.1, not iOS 27.0.1. Its README also distinguishes the toolkit/tweak functionality from a full jailbreak. It is therefore not a candidate for the exact 24A446 target as published.
+
+Source: https://github.com/kaffeindecaf/W0lfSword
+
+### Additional exact-build VM findings
+
+The current public `vphone-cli` research index includes iPhone17,3 / 24A446 guest-specific findings beyond initial boot, including DeviceHub display, host clock synchronization, and a Launchpad app-expansion stall report dated 2026-10-15. These show ongoing VM development and also show that the guest pipeline has operational edge cases. They remain custom-guest results; none is evidence of a physical jailbreak.
+
+Sources:
+- https://github.com/Lakr233/vphone-cli/blob/main/Research/Guest/devicehub_screen_viewing.md
+- https://github.com/Lakr233/vphone-cli/blob/main/Research/Guest/host_clock_sync.md
+- https://github.com/Lakr233/vphone-cli/blob/main/Research/Host/machine_templates.md
+
+### Verdict after this search
+
+- ABrake27: `PARTIAL_RESEARCH_LEAD`, not a jailbreak.
+- W0lfSword: `OUT_OF_TARGET_VERSION_RANGE` for iOS 27.0.1.
+- vphone-cli exact-build evidence: `UPSTREAM_REPORTED_VM_ONLY`.
+- Public, reproducible physical jailbreak for iPhone17,3 / T8140 / 24A446: `NOT_FOUND_IN_REVIEWED_SOURCES`.
+- Physical root SSH, arbitrary DEB installation, and persistence: `NOT_VALIDATED`.
