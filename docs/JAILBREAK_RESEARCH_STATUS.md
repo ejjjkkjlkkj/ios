@@ -502,3 +502,27 @@ PR #2: https://github.com/ejjjkkjlkkj/ios/pull/2
 - Calif's public iPhone 18 Pro demo does not establish iPhone 16 compatibility; no public reproducible target-specific jailbreak was found in reviewed sources.
 
 Next safe gate: once the download finishes, record the exact path, byte size and SHA-256, then test archive readability and parse `BuildManifest.plist` read-only. Do not restore the phone or run payloads as part of this audit.
+
+## GitHub research follow-up — Liter8 and exact-head CI — 2026-10-17
+
+### Relevant public repository examined
+
+- Upstream: https://github.com/Xplo8E/Liter8
+- Current README says the project patches and boots iOS 27 on **iPhone 11 only** (`n104ap`), using a tethered workflow that requires a Mac and pwn DFU for boot.
+- Its build table marks iOS 27.0.1 build `24A446` as `run` for iPhone 11. The 11 Pro and 11 Pro Max entries are explicitly `experimental`; the README says no one has confirmed them on those phones.
+- This is useful evidence that build `24A446` is not itself sufficient to establish hardware compatibility. It provides **no iPhone 16 / `iPhone17,3` / `D47AP` / `t8140` profile** and is not proof of compatibility with that target.
+- Liter8 is not an out-of-the-box answer to the target requirement: its documented workflow is Mac-based and tethered, while the target port has not been validated. Do not run its restore workflow on the target device as part of this read-only research.
+
+### Exact latest commit and CI
+
+- Documentation commit: `986faa6c994d7f3b5099b3c7ab3926ebc5231bb2`.
+- Swift CI for that exact commit: **PASS** (run 38975304917): https://github.com/ejjjkkjlkkj/ios/actions/runs/38975304917
+- PR #1 remains open and unmerged; GitHub currently reports `mergeable: true`. This only means GitHub does not currently report a merge conflict; it does not establish full CI health or reviewer approval.
+- The previously observed firmware-audit failure remains a real failure on the earlier commit `c095907e82805ad53c2c0f3a61df53913d83cd5d`. The latest documentation-only commit's Swift CI success must not be presented as a fix for that test failure. The missing-manifest correction in PR #2 remains separate and unmerged.
+
+### Updated conclusion
+
+- Public code search found no validated Liter8 support profile for the target iPhone 16.
+- Exact IPSW download, archive hash and manifest inspection: **NOT VALIDATED**.
+- Target-specific exploit, root SSH, and post-reboot persistence: **NOT VALIDATED**.
+- No merge, restore, or device modification performed.
