@@ -1,30 +1,39 @@
-# iOS Companion — sideloading research and iPhone diagnostics
+# iOS Companion — IPA management and iPhone diagnostics
 
 A clean-room Swift project aiming to make iPhone app management and diagnostics simpler than AltStore/SideStore, without requiring iTunes or iCloud.
 
 ## Current status
 
-**Prototype / NOT production-ready.** This repository starts from an empty GitHub repository. No iPhone pairing, app installation, signing, or physical-device diagnostics have been validated yet.
+**Prototype / NOT production-ready.** IPA/DEB filename recognition and conservative installation planning exist in the core model. Archive inspection, signing validation, USB transfer, installation, and physical-device diagnostics have not been validated.
 
 ## Product goals
 
 - A SwiftUI iPhone app for guided, accessible diagnostics.
-- A companion workflow that does not depend on iTunes or iCloud.
-- Clear reports with PASS / FAIL / PARTIAL / BLOCKED and evidence.
-- Explain app-signing, provisioning, trust, and Apple platform restrictions honestly.
+- A desktop companion without mandatory iTunes or iCloud dependencies.
+- Import and inspect IPA files; transfer/install them only through supported, authorized signing and distribution paths.
+- Recognize and inspect DEB packages for compatible jailbroken environments, with safeguards.
+- Reports using PASS / FAIL / PARTIAL / BLOCKED / NOT_VALIDATED and evidence.
 - Keyboard, VoiceOver, Dynamic Type, and high-contrast-friendly UI.
-- No destructive device actions; diagnostics are read-only by default.
+- Read-only diagnostics by default; explicit confirmation for device-changing operations.
 
-## Important platform constraint
+## IPA and DEB support
 
-An ordinary iOS app cannot freely install/sign other apps or access all low-level iPhone diagnostics. App installation outside the App Store still depends on an Apple-supported distribution/signing path and varies by region, account, iOS version, and distribution method. A desktop companion may help with supported workflows, but it cannot legitimately remove Apple's signing and trust requirements. The project must not claim otherwise.
+- **IPA:** the core recognizes the file type and describes required signing/provisioning checks. It does not yet parse or install the archive.
+- **DEB:** the core recognizes the file type. Stock iOS is blocked by default because DEB is a Debian package format, not a normal iOS app bundle. A compatible jailbroken environment and package manager would be required; no such installation has been implemented or validated.
+- **Transfer:** no USB transfer or app installation is implemented yet. A successful copy must never be reported as a successful installation.
+
+See docs/IPA_DEB_WORKFLOWS.md for the detailed workflow and safety requirements.
+
+## Platform constraint
+
+An ordinary iOS app cannot freely install/sign other apps or access all low-level iPhone diagnostics. App installation outside the App Store still depends on a supported signing/distribution path and varies by region, account, iOS version, and distribution method. A desktop companion may assist with supported workflows, but it cannot legitimately remove Apple's signing and trust requirements.
 
 ## Planned architecture
 
-- `Sources/PhoneBridgeCore`: platform-independent diagnostic models and report serialization.
-- `Tests/PhoneBridgeCoreTests`: automated unit tests.
-- `App/`: SwiftUI iOS user interface (requires Xcode/iOS SDK to build).
-- `docs/ARCHITECTURE.md`: security boundaries, implementation roadmap, and verification labels.
+- Sources/PhoneBridgeCore: platform-independent diagnostic and package models.
+- Tests/PhoneBridgeCoreTests: automated unit tests.
+- App/: SwiftUI iOS user interface (requires Xcode/iOS SDK to build).
+- docs/: architecture, roadmap, and package workflows.
 
 ## Build core package
 
@@ -34,7 +43,7 @@ Requires Swift 6 toolchain:
 swift test
 ```
 
-The Swift package tests do not prove iPhone hardware access, app installation, signing, or device-level diagnostics.
+Package tests validate code behavior only; they do not prove iPhone hardware access, app installation, signing, or device-level diagnostics.
 
 ## Verification labels
 
@@ -46,4 +55,4 @@ The Swift package tests do not prove iPhone hardware access, app installation, s
 
 ## Security
 
-Never upload device logs, identifiers, pairing records, or diagnostic reports without explicit user consent. Do not store Apple Account passwords, 2FA codes, or private signing keys in this repository.
+Never upload device logs, identifiers, pairing records, diagnostic reports, or package contents without explicit user consent. Do not store Apple Account passwords, 2FA codes, or private signing keys in this repository.
