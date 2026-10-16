@@ -623,3 +623,38 @@ The feature branch is therefore **not green**. The failed check is a real result
 | Exact target IPSW downloaded and locally inspected | NOT DONE |
 
 No device was modified, no IPSW was downloaded in this research pass, and no pull request was merged.
+
+## GitHub follow-up — Darwin VM for iPhone 16 and current CI — 2026-10-17
+
+### New lead: Passw/jprx-darwin-vm
+
+The public repository [Passw/jprx-darwin-vm](https://github.com/Passw/jprx-darwin-vm) describes booting iOS/macOS in QEMU and lists iPhone 16 (`iPhone17,3`, `t8140`) with iOS 27.0 beta 7 as a tested virtualized configuration. Its stated output is a barebones root shell for low-level Darwin research; it explicitly says it is not a full iPhone emulator and does not provide normal graphics, Wi-Fi, Bluetooth, or SpringBoard.
+
+Evidence limits:
+- The listed iPhone 16 configuration is iOS 27.0 beta 7 (`24A5424a`), **not** target build 27.0.1 (`24A446`).
+- Repository metadata shows one commit dated 2026-08-27 and no published GitHub releases.
+- A root shell inside QEMU is a virtual guest result; it is not root on the user's physical iPhone and is not a jailbreak installer.
+- It may be useful as a controlled kernel/Darwin research environment, but compatibility with the exact target IPSW remains unverified.
+
+Source: https://github.com/Passw/jprx-darwin-vm
+
+### Feature branch CI after the latest documentation commit
+
+Commit `8cd76e8b2080bcda0ea971a428a2f6d7ccad8626` has three reported checks: two completed **PASS** and one **IN_PROGRESS** at the time checked. This is not yet a fully green, completed CI result. The draft PR #1 remains open and unmerged.
+
+Checks:
+- In progress: https://github.com/ejjjkkjlkkj/ios/actions/runs/38975925434/job/117225238414
+- Passed: https://github.com/ejjjkkjlkkj/ios/actions/runs/38975925454/job/117225238317
+- Passed: https://github.com/ejjjkkjlkkj/ios/actions/runs/38975920852/job/117225223665
+
+### Updated assessment
+
+| Claim | Status |
+|---|---|
+| iPhone 16 / T8140 can boot a Darwin guest in QEMU on a listed iOS 27 beta build | UPSTREAM_REPORTED — VM ONLY |
+| Darwin VM is validated on target build 24A446 | NOT VALIDATED |
+| VM root shell proves physical iPhone root | NO — DIFFERENT ENVIRONMENT |
+| Public complete physical jailbreak for iPhone17,3 / 24A446 | NOT FOUND IN REVIEWED SOURCES |
+| Latest feature-branch CI | 2 PASS, 1 IN PROGRESS at check time |
+
+No device was modified. No IPSW was downloaded or locally analyzed in this pass. No PR was merged.
