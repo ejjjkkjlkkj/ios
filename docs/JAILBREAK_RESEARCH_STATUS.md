@@ -275,3 +275,62 @@ Sources:
 - Overall PhoneBridge feature-branch CI: **NOT_DECLARED_GREEN** until a matching complete run is observed after the firmware-audit fix is integrated and the relevant workflows pass.
 
 Next concrete task: obtain the exact target IPSW in a controlled environment, record its local SHA-256 and byte size, then run the repository's read-only target-firmware verifier. Do not restore or modify the device as part of this audit.
+
+
+## Broad research matrix — 2026-10-17
+
+This section records distinct investigation paths so that “search all ways” does not collapse unrelated evidence into a compatibility claim.
+
+### Search paths and current disposition
+
+| Path | What to check | Current disposition for iPhone17,3 / T8140 / 24A446 |
+|---|---|---|
+| Official vendor security advisories | Apple security releases, CVEs, affected/fixed versions, component names | No published CVE entry specifically attached to iOS 27.0.1 was found in the reviewed Apple release index. This is not proof of absence of vulnerabilities. |
+| Public jailbreak projects | Upstream repositories, release assets, supported-device tables, reproducible instructions | Liter8 documents iPhone 11 / n104ap only; no iPhone 16 support claim. |
+| Conference demonstrations | Primary announcement, footage, device model, build, post-reboot behavior | Calif demo is reported for iPhone18,2/18 Pro family context and T8160 in coverage; exploit chain and public tool remain unavailable in reviewed sources. No T8140 compatibility evidence. |
+| Firmware provenance | Exact IPSW, ZIP integrity, BuildManifest identity, local SHA-256, signing status | Not completed in this session: no local IPSW artifact or hash was available to verify. |
+| Static firmware analysis | Archive inventory, kernelcache/DeviceTree/boot components, tool versions, parser coverage, errors | BLOCKED pending the exact verified IPSW. Encrypted payloads must remain BLOCKED until validly decoded. |
+| Differential firmware analysis | Compare target build with a prior build for the same product type and component | BLOCKED pending both exact, hashed artifacts. iPhone19,2 diffs are not substitutes for iPhone17,3 inputs. |
+| Kernel and mitigation research | XNU source/version, patch diffs, PAC/PPL/SPTM/TXM and platform-specific boundaries | No target-specific exploit path validated. Kernel version strings alone are insufficient evidence. |
+| Darwin VM / emulator | Exact input hashes, pinned upstream revisions, complete boot log and guest build evidence | Any VM result would be simulation only; it cannot prove physical-device root or jailbreak. Exact target build boot is NOT_VALIDATED. |
+| USB / DFU / restore workflows | Upstream support, host prerequisites, signed ticket/restore behavior, recovery plan | No device operation performed. Do not restore, erase, or enter destructive workflows as part of this read-only audit. |
+| Physical device | Read-only model/build collection; only a public compatible method or authorized controlled research; root/SSH/reboot checks separately | NOT_VALIDATED: no physical proof supplied or generated. |
+| Scam / unofficial downloads | Claims of one-click jailbreaks, profiles, paid certificates, survey gates | Treat as untrusted unless corroborated by a reputable upstream project and independently reviewable source. Do not install profiles or run unknown binaries. |
+
+### New upstream evidence checked
+
+The public Liter8 README was rechecked. It states that its custom iOS 27 boot path is tethered, requires a Mac and pwned DFU at each boot, and is claimed for iPhone 11 (`n104ap`) only. Its documented restore step erases the phone. Its table lists build `24A446` for iPhone 11; that does not make it an iPhone 16 method.
+
+Source: https://github.com/Xplo8E/Liter8
+
+Recent independent reporting dated 2026-10-16 describes Calif's iPhone 18 Pro demonstration as returning to root SSH after a reboot and normal passcode unlock. It does not publish the exploit chain or establish iPhone 16 / T8140 support.
+
+Sources:
+- https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- https://gbhackers.com/ios-27-0-1-untethered-jailbreak/
+
+### Decision gates — do not skip
+
+1. **Firmware identity PASS** only when a local IPSW's SHA-256, ZIP CRC, unique BuildManifest and product/build identifiers have been recorded.
+2. **Static analysis PASS** only for artifacts actually extracted and parsed; record unsupported/encrypted components as BLOCKED.
+3. **VM boot PASS** means only the exact VM configuration booted, not that a physical iPhone is jailbroken.
+4. **Exploit compatibility PASS** requires public, reproducible evidence matching the target model/board and build, not just the iOS version.
+5. **Physical root/SSH PASS** requires evidence from the actual iPhone 16, separately verifying root, SSH reachability, reboot behavior and recovery.
+6. **Overall completion PASS** is forbidden while any mandatory gate is BLOCKED or NOT_VALIDATED.
+
+### CI state
+
+The Swift CI run for this report update, commit `048fdd23067de73b96f4592e9533fce0a997f0b2`, completed successfully:
+https://github.com/ejjjkkjlkkj/ios/actions/runs/38973803013
+
+This is the Swift CI workflow only. It is not proof that every workflow or the complete PhoneBridge pull request is green. PR #2's firmware-audit correction CI separately passed but remains unmerged:
+https://github.com/ejjjkkjlkkj/ios/pull/2
+
+### Current verdict
+
+- Repository documentation / Swift CI for commit `048fdd2`: **PASS**.
+- Firmware-audit fix CI: **PASS**, PR **OPEN / NOT MERGED**.
+- Exact target IPSW acquired and verified in this session: **NOT DONE**.
+- Target-specific static kernel analysis: **BLOCKED** pending IPSW.
+- Public jailbreak chain for iPhone16,3 / `iPhone17,3` / `D47AP` / `T8140` / `24A446`: **NOT_FOUND** in the sources reviewed.
+- Physical root SSH and untethered persistence on the target iPhone: **NOT_VALIDATED**.
