@@ -129,3 +129,21 @@ The KernelScope workflow passed on the target-firmware-verifier change. A separa
 - iPhone 16 / iPhone17,3 / T8140 / build 24A446 compatibility: **NOT_VALIDATED**.
 - Physical root / SSH on the user's iPhone 16: **NOT_VALIDATED**.
 - Firmware verifier synthetic unit tests: committed; do not claim passed until the new matching CI run completes successfully.
+
+
+## Apple advisory cross-check and latest CI — 2026-10-16
+
+Apple's official security-release index currently states that iOS 27.0.1 has **no published CVE entries**: https://support.apple.com/fr-fr/100100. Interpret this narrowly: no CVE entries are published for that update; it does **not** prove the OS has no vulnerabilities, and it does not identify or explain Calif's demonstrated chain. The same build number across iPhone models is not evidence of a shared exploit path.
+
+A current third-party firmware index lists build 24A446 as signed for iPhone17,3 and iPhone19,2, but that listing is not Apple's cryptographic signature verification and does not establish jailbreak compatibility: https://ipsw.dev/build/24A446.
+
+### Latest observed CI run for this branch
+
+Run 38966917928 (**KernelScope**) completed successfully. Run 38966917986 (**Swift and Firmware Audit CI**) failed again at `Tools/firmware-audit/test_firmware_audit.py::test_missing_manifest_is_partial`: expected `PARTIAL`, got `NOT_VALIDATED`. Swift package validation and tests passed; the failure is specifically in the firmware-audit unit suite. The audit files are not present in this feature branch's tree, so this branch cannot safely repair the owning implementation without locating its authoritative branch first.
+
+- KernelScope run: https://github.com/ejjjkkjlkkj/ios/actions/runs/38966917928
+- Firmware Audit CI run: https://github.com/ejjjkkjlkkj/ios/actions/runs/38966917986
+- Official Apple security-release index: https://support.apple.com/fr-fr/100100
+- Build catalog (third-party): https://ipsw.dev/build/24A446
+
+**Updated verdict:** overall CI is **FAIL** due to the separate firmware-audit test. The exact physical-device jailbreak objective remains **NOT_VALIDATED**.
