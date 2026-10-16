@@ -2,7 +2,7 @@
 
 **Target:** iPhone 16 `iPhone17,3`, board `D47AP`, platform `t8140`, iOS `27.0.1 (24A446)`.
 
-**Last reviewed:** 2026-10-16. This document is an evidence ledger, not a claim that a jailbreak exists.
+**Last reviewed:** 2026-10-17. This document is an evidence ledger, not a claim that a jailbreak exists.
 
 ## Evidence ledger
 
@@ -469,3 +469,9 @@ The iPhone 16 firmware catalog still identifies build 24A446 for iPhone17,3, but
 - Exact IPSW downloaded, hashed, archive-tested, and manifest parsed locally: **NOT DONE**.
 - Exploit chain, kernel offsets, PAC bypass, SEP/passcode bypass, or physical root SSH for target: **NOT VALIDATED**.
 - Safe next work: close the test-status defect with a reviewed code change, obtain the exact IPSW from a verified Apple CDN route, and run archive/manifest identity checks before deeper analysis. Do not infer device compatibility from the shared build number.
+
+## Integration gate recheck — 2026-10-17
+
+- PR #1 remains open and draft; GitHub currently reports `mergeable: false`. Resolve the branch/base conflict state and rerun CI before considering it ready for review or merge. No merge performed.
+- Latest research-report commit `6385ecedc5235a766a5a696846e1125afc387e3b` has no check-runs returned yet. Its CI state is **NOT VALIDATED**, not PASS.
+- PR #2's focused workflow passed, but its review-bot status was failed and the bot reported a usage limit; treat review approval as **NOT VALIDATED** until an actual code review is completed.
