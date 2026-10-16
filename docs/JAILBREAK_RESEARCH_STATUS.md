@@ -894,3 +894,35 @@ Source: https://github.com/Passw/jprx-darwin-vm
 The new cross-check did not find a public, reproducible jailbreak chain for physical iPhone 16 / `iPhone17,3 / D47AP / T8140 / 24A446`. Liter8/usbliter8 remain older-device-specific and tethered/experimental; darwin-vm and vphone-cli remain virtual-guest research; Calif remains a reported demonstration without a reviewed public implementation for this target.
 
 Target requirements still `NOT_VALIDATED`: physical root SSH, arbitrary DEB installation, and persistence across reboot. No device was modified, no IPSW was restored, and no PR was merged.
+
+
+## Additional research — 2026-10-17 (Calif primary statement and exact firmware metadata)
+
+### Calif primary statement checked
+
+Calif's own public newsletter entry dated 2026-10-16 lists the iPhone demo among its Hexacon demonstrations and says the material will be released “in due time.” The entry does not provide exploit identifiers, source code, a downloadable jailbreak, or a supported-device matrix. This is primary evidence that the team announced the demonstration, but not a public implementation for this repository's target.
+
+Source: https://blog.calif.io/p/iphone
+
+Independent reporting describes the on-stage device as iPhone 18 Pro / `iPhone19,2` / T8160 on iOS 27.0.1 build `24A446`, with root SSH returning after reboot. The target in this project is iPhone 16 / `iPhone17,3` / D47AP / T8140. Shared OS build numbers do not establish hardware compatibility.
+
+Sources:
+- https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- https://cybersecuritynews.com/ios-27-0-1-jailbreak-demonstrated/
+
+### Exact firmware metadata is available, but is not exploit evidence
+
+Public firmware references identify `iPhone17,3_27.0.1_24A446_Restore.ipsw` and list component/key metadata for this build. Such catalogs can help inventory the firmware and plan a static-analysis workflow, but their existence does not prove that a local IPSW has been verified, that every component is decryptable in the user's environment, or that any exploitable vulnerability exists.
+
+Sources:
+- https://theapplewiki.com/wiki/Keys:Rave_24A446_%28iPhone17%2C3%29
+- https://ipswfiles.com/iphone/iPhone17%2C3
+
+### Research outcome
+
+- Calif public announcement: `PRIMARY_DEMO_ANNOUNCEMENT`; no public implementation or target compatibility matrix in the announcement.
+- Reported untethered iOS 27.0.1 demonstration: `REPORTED_ON_IPHONE18_PRO_T8160`; not independently reproduced by this project.
+- Exact iPhone 16 / T8140 / 24A446 firmware metadata references: `REFERENCE_FOUND`; no local IPSW inspection claimed.
+- Public, reproducible physical jailbreak for iPhone16 `iPhone17,3 / D47AP / T8140 / 24A446`: `NOT_FOUND_IN_REVIEWED_SOURCES`.
+- Physical root SSH, arbitrary DEB installation, and reboot persistence for this target: `NOT_VALIDATED`.
+- No device was modified, no firmware was restored, and no PR was merged.
