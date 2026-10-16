@@ -43,7 +43,7 @@ def audit_tree(root: Path) -> dict:
         else:
             scripts[name] = {"exists": False}
 
-    exact_build = TARGET_BUILD in readme or TARGET_BUILD in submodules
+    exact_build_mentioned = TARGET_BUILD in readme or TARGET_BUILD in submodules
     target_model = TARGET_MODEL in readme
     target_version = bool(re.search(r"iOS\s+27\.0(?:\s|\(|$)", readme, re.IGNORECASE))
     qemu_submodule = (root / "qemu-sptm").is_dir() and any((root / "qemu-sptm").iterdir()) if (root / "qemu-sptm").is_dir() else False
@@ -53,7 +53,8 @@ def audit_tree(root: Path) -> dict:
         "required_layout": "PASS" if not missing else "PARTIAL",
         "target_model_mentioned": "PASS" if target_model else "NOT_VALIDATED",
         "ios_27_family_mentioned": "PASS" if target_version else "NOT_VALIDATED",
-        "exact_build_24A446_evidence": "PASS" if exact_build else "NOT_VALIDATED",
+        "exact_build_24A446_mentioned_in_text": "PASS" if exact_build_mentioned else "NOT_VALIDATED",
+        "exact_build_24A446_boot_verified": "NOT_VALIDATED",
         "qemu_sptm_submodule_populated": "PASS" if qemu_submodule else "PARTIAL",
         "mac_host_requirement_documented": "PASS" if mac_required else "NOT_VALIDATED",
         "physical_iphone_validation": "NOT_VALIDATED",
@@ -72,7 +73,7 @@ def audit_tree(root: Path) -> dict:
         "scripts": scripts,
         "limits": [
             "This is a static checkout audit; no shell script or binary was executed.",
-            "A README support matrix is not proof that the exact target build boots.",
+            "Text mentioning build 24A446 is not boot evidence; exact-build boot remains NOT_VALIDATED.",
             "A QEMU root shell is a guest-VM capability, not physical-device root or a jailbreak.",
             "Darwin VM setup and ramdisk preparation documented upstream require a Mac host.",
         ],
