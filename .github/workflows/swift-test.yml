@@ -1,0 +1,23 @@
+name: Swift CI
+
+on:
+  push:
+    branches: ["main", "feature/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Select Swift toolchain
+        run: swift --version
+      - name: Validate package
+        run: swift package describe
+      - name: Run unit tests
+        run: swift test
