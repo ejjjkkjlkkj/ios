@@ -147,3 +147,19 @@ Run 38966917928 (**KernelScope**) completed successfully. Run 38966917986 (**Swi
 - Build catalog (third-party): https://ipsw.dev/build/24A446
 
 **Updated verdict:** overall CI is **FAIL** due to the separate firmware-audit test. The exact physical-device jailbreak objective remains **NOT_VALIDATED**.
+
+## Security-advisory distinction — 2026-10-16 follow-up
+
+Apple's official security-release index labels iOS 27.0.1 as having “no published CVE entries” (release dated 28 September 2026): https://support.apple.com/en-us/100100. This is a statement about published CVE entries, not a claim that the build has no vulnerabilities.
+
+Decrypt's 16 October coverage reports that Apple's separate iOS 27 security notes credit Calif.io, in collaboration with Claude and Anthropic Research, for two bugs that could cause denial of service or a system crash. The report explicitly says neither is tied to the demonstrated jailbreak: https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot. Do not associate those crash bugs with a kernel privilege escalation or persistence chain without primary evidence.
+
+The public video reportedly shows the iPhone 18 Pro being unlocked with its normal passcode after reboot before a root SSH session is displayed. This is evidence for the demonstrated post-unlock state, not for bypassing the passcode screen.
+
+### Research conclusion after this cross-check
+
+- iOS 27.0.1: Apple currently lists no published CVE entries for this update.
+- Calif-associated crash/denial-of-service bugs: reported separately; relationship to jailbreak **NOT_ESTABLISHED**.
+- iPhone 16 / T8140 compatibility: **NOT_VALIDATED**.
+- Public, reproducible jailbreak package for the exact target: **NOT_FOUND** in the sources reviewed.
+- Physical root/SSH/persistence on the user's device: **NOT_VALIDATED**.
