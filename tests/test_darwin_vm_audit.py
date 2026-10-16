@@ -14,7 +14,7 @@ class DarwinVmAuditTests(unittest.TestCase):
             )
             report = audit_tree(root)
             self.assertEqual(report["status"], "PARTIAL")
-            self.assertEqual(report["checks"]["exact_build_24A446_evidence"], "NOT_VALIDATED")
+            self.assertEqual(report["checks"]["exact_build_24A446_boot_verified"], "NOT_VALIDATED")
             self.assertIn("run.sh", report["missing_required_paths"])
 
     def test_exact_build_text_does_not_claim_physical_jailbreak(self):
@@ -30,7 +30,8 @@ class DarwinVmAuditTests(unittest.TestCase):
             report = audit_tree(root)
             self.assertEqual(report["checks"]["physical_iphone_validation"], "NOT_VALIDATED")
             self.assertEqual(report["checks"]["jailbreak_compatibility"], "NOT_VALIDATED")
-            self.assertEqual(report["checks"]["exact_build_24A446_evidence"], "PASS")
+            self.assertEqual(report["checks"]["exact_build_24A446_mentioned_in_text"], "PASS")
+            self.assertEqual(report["checks"]["exact_build_24A446_boot_verified"], "NOT_VALIDATED")
             self.assertEqual(report["status"], "PARTIAL")
 
 
