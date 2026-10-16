@@ -183,3 +183,26 @@ Commit: `5b225874b0c6b8e764a53e56336cbf607f8a466e`.
 
 ### Validation state
 The new test commit has been pushed to `feature/phonebridge-kernelscope-audit`, but no matching Actions result was returned when queried. Therefore these added tests are **NOT_VALIDATED by CI** until a run for this commit is observed. The latest observed separate Firmware Audit CI failure remains unresolved; do not declare overall CI green.
+
+
+## Additional public candidate checked — Liter8 / usbliter8 — 2026-10-17
+
+### Evidence found
+- Public repository: https://github.com/Xplo8E/Liter8
+- The project README claims a working, tethered custom-iOS-27 boot path with root SSH and package management on **iPhone 11 (n104ap) only**. The author explicitly says no other A13 model is claimed.
+- Its compatibility table lists iOS 27.0.1 build 24A446 as tested on iPhone 11, but marks iPhone 11 Pro / Pro Max experimental and does not list iPhone 16 / iPhone17,3 / T8140.
+- The workflow is tethered: the README says every boot requires a Mac and pwned DFU. It also warns that the custom-firmware restore step erases the phone.
+- The project states several functions remain incomplete (including SEP, passcode, cellular data, and Apple services).
+
+### Target verdict
+| Claim | Status | Reason |
+|---|---|---|
+| Public iOS 27.0.1-related project exists | REPORTED | Public Liter8 repository and README |
+| Root SSH on iPhone 11 | UPSTREAM_REPORTED | Project author's device-specific claim; not independently reproduced here |
+| Liter8 supports iPhone 16 / T8140 | NOT_SUPPORTED_AS_PUBLISHED | The README limits its claim to iPhone 11 / n104ap; target model absent |
+| Calif's iPhone 18 Pro chain is the same method as Liter8 | NOT_VALIDATED | No source establishes a relationship |
+| Physical jailbreak on this repository owner's iPhone 16 | NOT_VALIDATED | No target-device evidence |
+
+This is a meaningful new public lead for iOS 27 research, but **not a solution for the iPhone 16 target**. Do not port its device-specific patch profiles or infer compatibility from the shared build number. Before any future physical experiment, review the full code and recovery path; its documented restore step is destructive. This repository's audit workflow remains read-only and must not execute Liter8 or restore firmware.
+
+Source checked: https://github.com/Xplo8E/Liter8 (README and device/build matrix, reviewed 2026-10-17).
