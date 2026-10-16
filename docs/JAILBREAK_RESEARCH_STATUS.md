@@ -658,3 +658,23 @@ Checks:
 | Latest feature-branch CI | 2 PASS, 1 IN PROGRESS at check time |
 
 No device was modified. No IPSW was downloaded or locally analyzed in this pass. No PR was merged.
+
+## Additional GitHub research update — 2026-10-17
+
+### New exact-build evidence (virtual guest only)
+
+| Finding | Status | Interpretation for the physical iPhone 16 target |
+|---|---|---|
+| `Lakr233/vphone-cli` compatibility guide reports iPhone17,3 / iOS 27.0.1 (24A446) booting in its virtualized guest after a TXM selector-24 admission patch, with `vphoned device.info` responding; bundle 2.6.0 is the first release carrying the fix | `UPSTREAM_REPORTED_VM_PASS` | Useful exact-build Darwin research, but the guide describes a Mac-hosted VM/custom-firmware pipeline. It does not prove an exploit or root SSH on a physical iPhone. |
+| `Lakr233/vphone-cli` latest release observed during this review is 2.9.5 (published 2026-10-16) | `RELEASE_FOUND` | Check its release notes and compatibility guide before pinning tools; do not assume release 2.9.5 alone is a physical jailbreak. |
+| `Xplo8E/Liter8` README lists iOS 27.0.1 / 24A446 as `run` only for iPhone 11 (`n104ap`); other listed devices are iPhone 11 Pro/Pro Max and explicitly `experimental` | `NOT_COMPATIBLE_WITH_TARGET_AS_DOCUMENTED` | The project explicitly says iPhone 11 only. Do not port its device profile or assume T8140 support. It is tethered and requires a Mac/pwn DFU; its documented workflow erases the device during restore. |
+| Calif's 2026-10-16 iPhone 18 Pro demonstration | `REPORTED_NO_PUBLIC_TOOL` | New coverage confirms a live demo and reboot-surviving root on iPhone18 Pro, but no exploit chain/tool or T8140 compatibility has been published in the reviewed evidence. |
+
+### GitHub sources reviewed
+- vphone-cli exact-build compatibility matrix: https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md
+- vphone-cli latest release: https://github.com/Lakr233/vphone-cli/releases/tag/2.9.5
+- Liter8 README/device matrix: https://github.com/Xplo8E/Liter8
+- Calif demonstration coverage (published 2026-10-16): https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+
+### Updated conclusion
+The strongest new exact-build result is a **virtual guest boot**, not a physical jailbreak. Liter8 is not a path for this target as documented. The physical iPhone 16 / T8140 / 24A446 still has no publicly reproducible, verified jailbreak chain in the sources reviewed. Keep root SSH, arbitrary DEB installation, and persistence as `NOT_VALIDATED`.
