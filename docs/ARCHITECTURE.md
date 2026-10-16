@@ -1,47 +1,38 @@
-# Architecture and implementation roadmap
+# Architecture PhoneBridge
 
-## Product split
+## Objectif
+
+Construire un centre de contrôle iPhone avec une application iOS accessible et un compagnon Windows/macOS. Le périmètre visé comprend la gestion IPA, fichiers, diagnostics, transferts, SSH et, uniquement dans des environnements compatibles, les opérations avancées. Voir [PRODUCT_SCOPE.md](PRODUCT_SCOPE.md) pour la vision et les critères.
+
+## Composants
 
 ### iOS app
+Interface SwiftUI accessible; diagnostics utilisant des API publiques; import/export via les interfaces système; permissions explicites; données limitées au sandbox sauf autre mécanisme autorisé.
 
-SwiftUI interface for guided, on-device checks using public APIs. It can report app-visible facts such as OS version, app version, available storage information where permitted, network reachability, and battery state where exposed by supported APIs. Every diagnostic must state its source and limitations.
+### Desktop companion
+Connexion USB/réseau, appairage et workflows supportés. Aucune dépendance obligatoire à iTunes/iCloud au niveau produit, mais les pilotes, composants Apple, comptes, profils et permissions nécessaires doivent être déclarés.
 
-### Desktop companion (future)
+### Core partagé
+Modèles déterministes pour capacités, résultats, planification IPA/DEB, protocoles versionnés, rapports JSON, validation de chemins et état de transfert. Les modèles ne doivent pas être présentés comme fonctions de transport ou d’installation opérationnelles.
 
-A separate companion may use supported Apple pairing/developer interfaces or audited open-source tooling to gather permitted diagnostics and assist with app deployment. It must not require iTunes or iCloud as a product dependency. It must disclose any platform, driver, pairing, developer-account, or signing prerequisites before the user starts.
+### SSH
+Client SSH/SFTP authentifié avec vérification de clé d’hôte et stockage sécurisé des identifiants. Le mode root est isolé et optionnel; il se connecte seulement à un serveur root déjà configuré par le propriétaire. Il ne crée pas de privilèges sur un iPhone standard.
 
-### Signing and distribution
+### IPA et DEB
+IPA : analyse et installation uniquement via une voie de signature/distribution autorisée. DEB : inspection sûre; installation bloquée sur iOS standard et permise uniquement dans un environnement modifié compatible, détecté et testé.
 
-The app must never represent certificate signing, provisioning, developer mode, trust prompts, or regional distribution restrictions as bypassed. Use documented, authorized distribution paths. No credential harvesting, certificate theft, or security-control evasion.
+## Contrat de preuve
 
-## Evidence contract
+Chaque vérification inclut un identifiant stable, un statut PASS/FAIL/PARTIAL/BLOCKED/NOT_VALIDATED, un résumé, une source de preuve, un horodatage et les limites/étapes suivantes. Les tests unitaires prouvent le comportement du code uniquement; simulateur et appareil physique doivent être distingués.
 
-Every check returns:
-- stable check identifier;
-- status: PASS, FAIL, PARTIAL, BLOCKED, or NOT_VALIDATED;
-- human-readable summary;
-- evidence source;
-- timestamp;
-- limitation / next action when applicable.
+## Sécurité
 
-A successful unit test validates code behavior only. It is not proof that an iPhone has been connected or diagnosed.
+- Lecture seule par défaut; confirmation avant toute modification.
+- Pas de contournement de signature, sandbox, authentification ou protection système.
+- Secrets exclus du dépôt et des logs.
+- Validation des chemins, tailles et digests sur les transferts.
+- Aucun envoi cloud par défaut des fichiers IPA/DEB, logs, identifiants ou rapports.
+- Analyse de paquets sans exécution automatique de scripts non fiables.
 
-## Milestones
-
-1. **Foundation** — diagnostic model, deterministic JSON report, tests, CI.
-2. **iOS UI** — accessible SwiftUI dashboard and on-device checks.
-3. **Device connection** — investigate supported USB/pairing APIs for each target desktop OS; no fabricated support claims.
-4. **Diagnostics** — battery/thermal/storage/log data only where the platform exposes it through documented interfaces or user-authorized device reports.
-5. **App deployment** — evaluate compliant signing/install methods and clearly expose prerequisites.
-6. **Release** — signed builds, SBOM/dependency review, security review, real-device matrix, reproducible release notes.
-
-## Non-goals
-
-- Bypassing Apple's code-signing enforcement.
-- Installing arbitrary apps from an ordinary iOS app without a supported signing/distribution mechanism.
-- Claiming access to private iOS APIs or hardware data without evidence.
-- Uploading device data without informed consent.
-
-
-## iOS 27.0.1 compatibility target
-The requested primary target is iOS 27.0.1. The current Swift package minimum deployment version is iOS 17, which is a lower bound and does not establish compatibility with the latest iOS release. The app must be built with an Xcode/iOS SDK that supports iOS 27, use availability checks for newer APIs, and be validated on a physical device running iOS 27.0.1. Current status: **NOT VALIDATED**. See `IOS_COMPATIBILITY.md`.
+## Release
+Une release exige CI verte, projet Xcode compilable, tests, vérification accessibilité/sécurité et matrice de validation sur appareils physiques. La cible iOS 27.0.1 demeure NOT VALIDATED jusqu’à preuve.
