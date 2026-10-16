@@ -526,3 +526,36 @@ Next safe gate: once the download finishes, record the exact path, byte size and
 - Exact IPSW download, archive hash and manifest inspection: **NOT VALIDATED**.
 - Target-specific exploit, root SSH, and post-reboot persistence: **NOT VALIDATED**.
 - No merge, restore, or device modification performed.
+
+
+## GitHub research update — 2026-10-17 (Airlift and vphone-cli)
+
+### Newly identified public projects
+
+| Project / evidence | Status | Relevance to the physical iPhone 16 target |
+|---|---|---|
+| `0xjohnnydev/airlift`: AirTraffic path-validation sandbox escape | `PUBLIC_POC` | Upstream README says tested on iOS 27.0 RC (24A435); it describes reading/writing files outside AirTraffic's intended directory scope, with confirmed writes in selected `/var/mobile` paths. This is not a root exploit, kernel exploit, root SSH, or full jailbreak. |
+| `YiHoooong/AirliftSilence`: Windows wrapper using Airlift | `TARGET_BUILD_REPORTED` | Its README reports end-to-end file read/replace/restore on iOS 27.0.1 (24A446), over USB with a paired/unlocked device and Apple's Windows device components. This is a project author's report, not independent validation by PhoneBridge. Its demonstrated task modifies call-announcement audio files; it does not demonstrate root or arbitrary system-partition writes. |
+| Airlift's iOS 27.0.1 Grappa-session workaround | `PUBLIC_RESEARCH` | AirliftSilence documents that 24A446 rejects sessions without Grappa HostInfo and says it reuses client tokens documented by AirCard-iOS. This may explain why a file-operation PoC was adapted to the target build, but it does not establish privilege escalation. |
+| `Lakr233/vphone-cli` compatibility guide and issue #596 / PR #599 | `VM_ONLY_VALIDATION` | Upstream reports iPhone17,3 + iOS 27.0.1 (24A446) boots in its virtualized research guest with cloudOS 26.4 after a TXM pre-check patch. This is a VM/custom-firmware result, not a physical-device jailbreak. Its kernel shared-region patch for iPhone18,x is likewise VM-specific. |
+| `Xplo8E/Liter8` compatibility table | `NOT_VALIDATED_FOR_TARGET` | It lists 24A446 as experimental on some devices, but no confirmed iPhone17,3/T8140 profile was found in the reviewed material. Do not infer support from the build number alone. |
+
+### Source links
+
+- Airlift upstream: https://github.com/0xjohnnydev/airlift
+- AirliftSilence Windows project: https://github.com/YiHoooong/AirliftSilence
+- AirCard-iOS token/reference project: https://github.com/Mak5er/AirCard-iOS
+- vphone-cli compatibility guide: https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md
+- vphone-cli issue #596: https://github.com/Lakr233/vphone-cli/issues/596
+- vphone-cli fix PR #599: https://github.com/Lakr233/vphone-cli/pull/599
+- Liter8: https://github.com/Xplo8E/Liter8
+
+### Updated assessment
+
+Airlift is the most directly relevant new lead for limited file operations on the exact 24A446 build. It does **not** close the jailbreak objective: the published scope is an AirTraffic sandbox escape with selected mobile-data file access, not kernel privilege escalation or root. No reviewed source demonstrates root SSH, installation of arbitrary DEBs as root, persistence after reboot on a physical iPhone17,3, or a reproducible complete jailbreak for this target.
+
+Next evidence needed:
+1. Verify the exact iPhone17,3/24A446 IPSW locally and preserve SHA-256 plus BuildManifest metadata.
+2. For Airlift, record the upstream commit/release and exact supported device/build claims; treat any live test as a separate authorized, reversible file-access test.
+3. Keep privilege level, accessible path scope, write/read verification, reboot persistence, and physical-device root as separate test results.
+4. Do not label VM boot success or a `/var/mobile` file write as physical root or a complete jailbreak.
