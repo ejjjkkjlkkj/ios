@@ -582,3 +582,44 @@ Additional source review found an important qualification:
 | Airlift supplies a complete jailbreak for this target | `NOT_DEMONSTRATED` |
 
 Source review is not device execution. No Airlift binary was downloaded or run by this repository, and no physical device was modified.
+
+## GitHub follow-up — vphone-cli merged patch and exact-head CI — 2026-10-17
+
+### New source-level finding: vphone-cli PR #599
+
+- Issue [#596](https://github.com/Lakr233/vphone-cli/issues/596) reported a first-boot kernel panic for iOS 27.0.1 (24A446) using vphone-cli 2.6.0.
+- The issue was closed by merged [PR #599](https://github.com/Lakr233/vphone-cli/pull/599). Its patch is specifically about the **virtualized research guest**: the cloudOS 26.4 guest kernel's dyld shared region was too small for some iPhone 18 cache sizes; the PR widens that guest region and adds a preflight refusal when a cache cannot fit.
+- The PR body explicitly notes that the iPhone17,3 cache size fits the existing guest region. That is a virtual-machine compatibility fact only. It does not establish that a physical iPhone 16 can be jailbroken, booted with custom firmware, or given root SSH.
+- The merge is confirmed in GitHub metadata (merged: true); it must not be described as a physical-device exploit.
+
+Sources:
+- Issue #596: https://github.com/Lakr233/vphone-cli/issues/596
+- Merged PR #599: https://github.com/Lakr233/vphone-cli/pull/599
+- Compatibility guide: https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md
+
+### Search-quality note: repository named iOS27/Jailbreak
+
+GitHub search surfaced [iOS27/Jailbreak](https://github.com/iOS27/Jailbreak). Its repository metadata reports size 0, one star, and an old push date (2025-05-30); its contents endpoint exposes only a README. No executable, source implementation, release artifact, or target-specific evidence was found there. It is not a usable jailbreak lead.
+
+A direct GitHub API lookup for a guessed califio/iphone repository returned 404. This does not prove Calif has no repositories under any other account or name; the official Calif announcement remains the source reviewed for its stated future release, and no public tool or device matrix was found.
+
+### Exact feature-head CI recheck
+
+For feature branch commit 8985d91028f36aa310903922a579d081046fb94d, GitHub's commit check-runs endpoint now returns three completed checks:
+- One check: **FAIL** — https://github.com/ejjjkkjlkkj/ios/actions/runs/38975719386/job/117224555668
+- Two checks: **PASS** — https://github.com/ejjjkkjlkkj/ios/actions/runs/38975719218/job/117224554728 and https://github.com/ejjjkkjlkkj/ios/actions/runs/38975714128/job/117224539011
+
+The feature branch is therefore **not green**. The failed check is a real result on this exact head; do not infer that the open PR #2 fix is incorporated merely because PR #2 exists or has its own passing focused run. PR #1 remains open, draft, and unmerged. GitHub reports mergeable: true, which only describes the current merge-conflict assessment.
+
+### Updated assessment
+
+| Claim | Status |
+|---|---|
+| vphone-cli PR #599 merged | PASS — MERGED |
+| vphone-cli proves physical iPhone17,3 jailbreak | NOT_DEMONSTRATED — VM ONLY |
+| Public Calif jailbreak tool for iPhone17,3/T8140 | NOT FOUND IN REVIEWED SOURCES |
+| Exact feature-head CI | FAIL — 1 FAILED, 2 PASSED |
+| Physical iPhone 16 root SSH / reboot persistence | NOT_VALIDATED |
+| Exact target IPSW downloaded and locally inspected | NOT DONE |
+
+No device was modified, no IPSW was downloaded in this research pass, and no pull request was merged.
