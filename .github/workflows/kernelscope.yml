@@ -17,6 +17,7 @@ on:
       - "tools/kernelscope.py"
       - "tools/retrieve_kernelcache.py"
       - "tools/darwin_vm_audit.py"
+      - "tools/verify_target_firmware.py"
       - "tests/**"
       - "docs/KERNELSCOPE.md"
       - "docs/IPHONE16_IOS27_KERNEL.md"
