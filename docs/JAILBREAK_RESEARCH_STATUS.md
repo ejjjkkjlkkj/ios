@@ -210,10 +210,10 @@ Source checked: https://github.com/Xplo8E/Liter8 (README and device/build matrix
 
 ## CI follow-up — 2026-10-17
 
-The earlier PR check for run `38973232945` used the PR merge base `ebcc98ea063c67b5469e4188d903d75b64d2d07f`. That base predates the current `main` head `b7372deff1dfc598e32405bab71404a30605f614`, which includes the baseline capability fix and the firmware-audit missing-manifest status correction in the repository history. The dedicated corrective branch's run `38973187844` completed successfully; the PhoneBridge PR run remains a historical failure on its earlier merge snapshot, not evidence that the current `main` source still lacks the fix.
+The complete CI failure is **not explained solely by a stale PR merge base**. The failing PR run `38973232945` reports `test_missing_manifest_is_partial`: the checked-out implementation returns `NOT_VALIDATED` where the test expects `PARTIAL`. The fix exists on the separate branch `feature/fix-firmware-audit-missing-manifest-status` and that branch's run `38973187844` completed successfully, but the fix is **not present in the PhoneBridge feature branch or current `main` source**. The current `main` head `b7372deff1dfc598e32405bab71404a30605f614` contains a separate baseline capability fix; it must not be described as containing the firmware-audit correction.
 
 - Current `main` head: https://github.com/ejjjkkjlkkj/ios/commit/b7372deff1dfc598e32405bab71404a30605f614
 - Corrective branch CI: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973187844
-- Historical failing PR CI: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973232945
+- Failing PhoneBridge PR CI: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973232945
 
-**Required validation:** obtain a fresh Actions run for the current PR head against the current base before marking the PR CI green. KernelScope success alone does not establish that the complete workflow passes. No PR merge was performed.
+**Required validation:** incorporate the tested correction through an explicitly reviewed change and obtain a fresh CI run for the resulting PR head. KernelScope success alone does not establish that the complete workflow passes. No PR merge was performed.
