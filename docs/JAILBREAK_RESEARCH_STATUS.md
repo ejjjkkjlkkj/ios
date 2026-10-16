@@ -678,3 +678,26 @@ No device was modified. No IPSW was downloaded or locally analyzed in this pass.
 
 ### Updated conclusion
 The strongest new exact-build result is a **virtual guest boot**, not a physical jailbreak. Liter8 is not a path for this target as documented. The physical iPhone 16 / T8140 / 24A446 still has no publicly reproducible, verified jailbreak chain in the sources reviewed. Keep root SSH, arbitrary DEB installation, and persistence as `NOT_VALIDATED`.
+
+## GitHub follow-up — 2026-10-17 (exact-build VM details and source correction)
+
+### New verification from upstream documentation
+
+| Finding | Status | Evidence / limitation |
+|---|---|---|
+| `Lakr233/vphone-cli` compatibility guide explicitly reports `iPhone17,3 27.0.1 (24A446)` booting with `26.4-23E5207q` cloudOS and the `txm-boot-precheck_admission` patch; guest `vphoned device.info` responds | `UPSTREAM_REPORTED_VM_PASS` | This is the most exact build-specific VM evidence found. It remains a custom virtual guest, not a physical-device jailbreak. |
+| Current `jprx/darwin-vm` README lists `iPhone17,3 / t8140` as booting iOS 27.0 `24A437` and iOS 26.6 | `UPSTREAM_REPORTED_VM_PASS` | The README does not list 27.0.1 `24A446` as a tested pairing. |
+| `jprx/darwin-vm/get_files.sh` defaults to iPhone17,3 / 27.0 `24A437` and says preparation/ramdisk patching requires macOS | `HOST_PREREQUISITE_DOCUMENTED` | Do not claim this pipeline has been run on this repository's Windows host. |
+| darwin-vm provides root shell and SSH/TCP tunnelling in its VM | `VM_ONLY` | The project explicitly says it is not a full iPhone emulator and does not provide normal SpringBoard, Wi-Fi, Bluetooth, graphics or GUI apps. VM root/SSH is not physical root/SSH. |
+
+### Correction to earlier wording
+The currently inspected upstream repository is `jprx/darwin-vm`. Its current README test row is iOS 27.0 `24A437` for `iPhone17,3/t8140`; it should not be described as a verified iOS 27.0 beta 7 `24A5424a` result based on the current matrix. Exact build `24A446` is instead explicitly documented by the separate `vphone-cli` VM compatibility guide.
+
+### Sources reviewed
+- https://github.com/jprx/darwin-vm
+- https://github.com/jprx/darwin-vm/blob/main/get_files.sh
+- https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md
+- https://github.com/Lakr233/vphone-cli/releases/tag/2.9.5
+
+### Target conclusion unchanged
+The exact `24A446` virtual-guest boot is a useful analysis lead, but it does not provide a public, reproducible jailbreak chain for a physical iPhone 16 `T8140`. Physical root, root SSH, arbitrary DEB installation and persistence remain `NOT_VALIDATED`.
