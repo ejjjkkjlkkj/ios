@@ -4,25 +4,27 @@ A clean-room Swift project aiming to make iPhone app management and diagnostics 
 
 ## Current status
 
-**Prototype / NOT production-ready.** IPA/DEB filename recognition and conservative installation planning exist in the core model. Archive inspection, signing validation, USB transfer, installation, and physical-device diagnostics have not been validated.
+**Prototype / NOT production-ready.** IPA/DEB filename recognition and conservative installation planning exist in the core model. The no-jailbreak scope excludes DEB installation. SSH client/service, archive inspection, signing validation, USB transfer, IPA installation, and physical-device diagnostics have not been validated.
 
 ## Product goals
 
 - A SwiftUI iPhone app for guided, accessible diagnostics.
 - A desktop companion without mandatory iTunes or iCloud dependencies.
 - Import and inspect IPA files; transfer/install them only through supported, authorized signing and distribution paths.
-- Recognize and inspect DEB packages for compatible jailbroken environments, with safeguards.
+- No DEB installation in the no-jailbreak product scope.
+- Provide an authenticated SSH-based connection where the target explicitly runs an SSH server; on stock iOS, use only a limited in-app service, not a system shell.
 - Reports using PASS / FAIL / PARTIAL / BLOCKED / NOT_VALIDATED and evidence.
 - Keyboard, VoiceOver, Dynamic Type, and high-contrast-friendly UI.
 - Read-only diagnostics by default; explicit confirmation for device-changing operations.
 
-## IPA and DEB support
+## IPA and SSH support without jailbreak
 
-- **IPA:** the core recognizes the file type and describes required signing/provisioning checks. It does not yet parse or install the archive.
-- **DEB:** the core recognizes the file type. Stock iOS is blocked by default because DEB is a Debian package format, not a normal iOS app bundle. A compatible jailbroken environment and package manager would be required; no such installation has been implemented or validated.
-- **Transfer:** no USB transfer or app installation is implemented yet. A successful copy must never be reported as a successful installation.
+- **IPA:** the core recognizes the file type and describes signing/provisioning prerequisites. It does not yet parse, sign, transfer, or install the archive.
+- **DEB:** installation is explicitly out of scope for stock iOS. SSH does not bypass Apple's code-signing, sandbox, or system privilege restrictions.
+- **SSH:** planned for authenticated connections to a server the user has explicitly enabled. A normal iPhone does not expose a general-purpose system SSH server; a stock-iOS implementation must be a limited service inside the app, constrained by iOS sandbox and app lifecycle rules. It must not be described as root/system SSH.
+- **Transfer:** SSH transfer is not implemented yet. Copying a file must never be reported as successful installation.
 
-See docs/IPA_DEB_WORKFLOWS.md for the detailed workflow and safety requirements.
+See `docs/IPA_DEB_WORKFLOWS.md`, `docs/SSH_STOCK_IOS.md`, and `docs/IOS_COMPATIBILITY.md` for scope and constraints.
 
 ## Platform constraint
 
