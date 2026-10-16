@@ -1,64 +1,46 @@
-# iOS Companion — IPA management and iPhone diagnostics
+# iOS Companion — PhoneBridge
 
-A clean-room Swift project aiming to make iPhone app management and diagnostics simpler than AltStore/SideStore, without requiring iTunes or iCloud.
+PhoneBridge vise à devenir un centre de contrôle complet de l’iPhone : applications et IPA, fichiers, diagnostics, connexion USB/réseau, rapports, accessibilité et SSH avancé lorsque l’appareil cible l’autorise.
 
-## Current status
+## État réel actuel
 
-**Prototype / NOT production-ready.** IPA/DEB filename recognition and conservative installation planning exist in the core model. The no-jailbreak scope excludes DEB installation. SSH client/service, archive inspection, signing validation, USB transfer, IPA installation, and physical-device diagnostics have not been validated.
+**Prototype — NOT PRODUCTION-READY.** Le cœur Swift contient des modèles de diagnostic et de planification IPA/DEB. L’interface SwiftUI est embryonnaire. L’analyse des archives, la validation réelle de signature, le transport USB, l’installation IPA, le client SSH, les diagnostics physiques et la connexion root ne sont pas validés comme fonctions opérationnelles. Ne pas interpréter la documentation ou les modèles comme une implémentation terminée.
 
-## Product goals
+## Objectif : faire le maximum sur iOS
 
-- A SwiftUI iPhone app for guided, accessible diagnostics.
-- A desktop companion without mandatory iTunes or iCloud dependencies.
-- Import and inspect IPA files; transfer/install them only through supported, authorized signing and distribution paths.
-- No DEB installation in the no-jailbreak product scope.
-- Provide an authenticated SSH-based connection where the target explicitly runs an SSH server; on stock iOS, use only a limited in-app service, not a system shell.
-- Reports using PASS / FAIL / PARTIAL / BLOCKED / NOT_VALIDATED and evidence.
-- Keyboard, VoiceOver, Dynamic Type, and high-contrast-friendly UI.
-- Read-only diagnostics by default; explicit confirmation for device-changing operations.
+- Gestion des IPA : import, inspection, diagnostic de signature/provisioning, explication des prérequis et installation par une voie autorisée.
+- Gestion des fichiers : import/export et transferts avec contrôle d’intégrité dans les limites des permissions disponibles.
+- Diagnostics : collecte uniquement des informations exposées par des API publiques, rapports fournis volontairement ou interfaces autorisées.
+- Compagnon Windows/macOS sans dépendance obligatoire à iTunes ou iCloud, tout en indiquant les pilotes et prérequis qui restent nécessaires.
+- SSH authentifié, vérification de la clé d’hôte et transfert sécurisé.
+- Mode SSH root facultatif **uniquement vers un serveur root déjà configuré et autorisé par le propriétaire**.
+- Inspection DEB; installation bloquée sur iOS standard et limitée à un environnement modifié compatible, explicitement détecté et testé.
+- Accessibilité VoiceOver, Dynamic Type, navigation clavier compatible et rapports explicites PASS / FAIL / PARTIAL / BLOCKED / NOT VALIDATED.
+- Confidentialité : lecture seule par défaut, consentement avant partage, aucun secret dans les logs et aucune transmission cloud par défaut.
 
-## IPA and SSH support without jailbreak
+## Limites importantes
 
-- **IPA:** the core recognizes the file type and describes signing/provisioning prerequisites. It does not yet parse, sign, transfer, or install the archive.
-- **DEB:** installation is explicitly out of scope for stock iOS. SSH does not bypass Apple's code-signing, sandbox, or system privilege restrictions.
-- **SSH:** planned for authenticated connections to a server the user has explicitly enabled. A normal iPhone does not expose a general-purpose system SSH server; a stock-iOS implementation must be a limited service inside the app, constrained by iOS sandbox and app lifecycle rules. It must not be described as root/system SSH.
-- **Transfer:** SSH transfer is not implemented yet. Copying a file must never be reported as successful installation.
+Une application iOS standard ne peut pas obtenir librement un shell root, activer un serveur SSH système, contourner la signature de code ou installer arbitrairement n’importe quelle application. **SSH root sans jailbreak n’est possible que si l’appareil dispose déjà d’un service root autorisé**; l’application ne peut pas créer ce privilège. Les installations IPA restent dépendantes de méthodes de signature/distribution compatibles. Les fichiers DEB ne sont pas des applications installables normalement sur iOS standard.
 
-See `docs/IPA_DEB_WORKFLOWS.md`, `docs/SSH_STOCK_IOS.md`, and `docs/IOS_COMPATIBILITY.md` for scope and constraints.
+## Documentation
 
-## Platform constraint
+- [Vision produit et critères de validation](docs/PRODUCT_SCOPE.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Flux IPA/DEB](docs/IPA_DEB_WORKFLOWS.md)
+- [SSH et accès root](docs/SSH_STOCK_IOS.md)
+- [Compatibilité iOS 27.0.1](docs/IOS_COMPATIBILITY.md)
 
-An ordinary iOS app cannot freely install/sign other apps or access all low-level iPhone diagnostics. App installation outside the App Store still depends on a supported signing/distribution path and varies by region, account, iOS version, and distribution method. A desktop companion may assist with supported workflows, but it cannot legitimately remove Apple's signing and trust requirements.
+## Build du cœur Swift
 
-## Planned architecture
-
-- Sources/PhoneBridgeCore: platform-independent diagnostic and package models.
-- Tests/PhoneBridgeCoreTests: automated unit tests.
-- App/: SwiftUI iOS user interface (requires Xcode/iOS SDK to build).
-- docs/: architecture, roadmap, and package workflows.
-
-## Build core package
-
-Requires Swift 6 toolchain:
+Nécessite Swift 6 :
 
 ```sh
 swift test
 ```
 
-Package tests validate code behavior only; they do not prove iPhone hardware access, app installation, signing, or device-level diagnostics.
+Aucun résultat de test n’est revendiqué ici sans exécution et preuve. Les tests unitaires ne prouvent pas le fonctionnement sur un iPhone physique.
 
-## Verification labels
+## Cible iOS 27.0.1
 
-- **PASS** — directly tested with reproducible evidence.
-- **FAIL** — test executed and failed.
-- **PARTIAL** — only a subset is implemented or validated.
-- **BLOCKED** — cannot be validated in the current environment.
-- **NOT VALIDATED** — no test evidence yet.
-
-## Security
-
-Never upload device logs, identifiers, pairing records, diagnostic reports, or package contents without explicit user consent. Do not store Apple Account passwords, 2FA codes, or private signing keys in this repository.
-
-
-## iOS 27.0.1 compatibility
-The primary target is **iOS 27.0.1**. The Swift package currently declares iOS 17 as its minimum deployment target; that is not proof of compatibility with iOS 27.0.1. A complete Xcode app project, a build using an SDK that supports iOS 27, and physical-device validation are still required. Status: **NOT VALIDATED**. See `docs/IOS_COMPATIBILITY.md`.
+iOS 27.0.1 est la cible déclarée, **pas une compatibilité validée**. Le projet doit encore être compilé avec un SDK compatible, puis testé sur appareil physique. Le package déclare actuellement iOS 17 comme version minimale; cela ne prouve pas la compatibilité avec iOS 27.0.1.
