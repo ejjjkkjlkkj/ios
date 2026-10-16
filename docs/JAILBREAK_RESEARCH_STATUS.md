@@ -451,3 +451,21 @@ The iPhone 16 firmware catalog still identifies build 24A446 for iPhone17,3, but
 - Calif public tool/source release for target: **NOT FOUND** in reviewed sources.
 - iPhone 16 target IPSW local inspection: **NOT DONE**.
 - Physical jailbreak/root/reboot-persistence proof: **NOT VALIDATED**.
+## Further research and PR review audit — 2026-10-17
+
+### Primary and official source check
+- Calif's official post dated 2026-10-16 says the demos will be released in due time, but provides no tool download, exploit identifiers, or device compatibility matrix: https://blog.calif.io/p/iphone
+- Decrypt's report describes the demonstrated target as iPhone 18 Pro (`iPhone19,2`, T8160), build `24A446`; it says no public tool or bug details are available. The device was unlocked with the regular passcode before root SSH was shown. This is not evidence for iPhone 16 (`iPhone17,3`, T8140), nor passcode bypass: https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- Apple's security-release index lists iOS 27.0.1 (24A446) on 2026-09-28 and says no CVE entries are published for that update. This does not establish that the Calif demo uses the two unrelated crash bugs attributed to Calif in earlier iOS 27 notes: https://support.apple.com/en-us/100100
+- The IPSW catalog lists iPhone 16 `iPhone17,3_27.0.1_24A446_Restore.ipsw` at approximately 12 GiB and marks it signed. This is catalog status, not a locally verified Apple signature or artifact: https://ipsw.me/iOS/27.0.1/
+
+### Pull-request and CI state
+- PR #1 is still open and draft; its head includes the new IPSW validation plan. It has not been merged: https://github.com/ejjjkkjlkkj/ios/pull/1
+- PR #2 remains open and unmerged. Its focused CI passed, but the PR review bot reported a failed review status and then reported that its review usage limit had been reached. This is not equivalent to a successful code review; resolve review coverage before treating the change as approved: https://github.com/ejjjkkjlkkj/ios/pull/2
+- The PhoneBridge feature head's latest observed firmware audit run still fails because `test_missing_manifest_is_partial` receives `NOT_VALIDATED` instead of `PARTIAL`. The other two checks on that head passed. The new documentation commit has no check runs yet; no full-green result is claimed.
+
+### New evidence boundaries
+- Public Calif release for iPhone 16 / T8140 / iOS 27.0.1: **NOT FOUND** in reviewed sources.
+- Exact IPSW downloaded, hashed, archive-tested, and manifest parsed locally: **NOT DONE**.
+- Exploit chain, kernel offsets, PAC bypass, SEP/passcode bypass, or physical root SSH for target: **NOT VALIDATED**.
+- Safe next work: close the test-status defect with a reviewed code change, obtain the exact IPSW from a verified Apple CDN route, and run archive/manifest identity checks before deeper analysis. Do not infer device compatibility from the shared build number.
