@@ -1,60 +1,76 @@
-# Roadmap — maximize useful functionality
+# Roadmap — PhoneBridge, contrôle complet de l’iPhone
 
-## Phase 1 — Core
-- [x] Evidence-labelled diagnostic model and deterministic JSON report.
-- [x] Baseline capability matrix and local diagnostic engine.
-- [x] Initial SwiftUI dashboard source and unit tests.
-- [x] macOS Swift CI workflow.
-- [x] Recognize IPA and DEB filenames and create conservative installation plans.
+Priorité : livrer un socle utilisable, puis implémenter les capacités une par une avec tests et preuves. « Tout faire » est la vision; les limites imposées par iOS doivent rester explicites.
 
-## Phase 2 — Build and validate
-- [ ] Run CI and fix actual compiler/test failures.
-- [ ] Add an Xcode project/workspace and app target.
-- [ ] Build for iOS Simulator with a pinned Xcode/SDK.
-- [ ] Validate VoiceOver, Dynamic Type, and contrast manually.
-- [ ] Add dependency and secret scanning.
+## Phase 0 — Fondations et preuve
+- [x] Modèles de diagnostic avec statuts et rapport JSON.
+- [x] Matrice initiale de capacités et moteur de diagnostic local.
+- [x] Modèle de planification des fichiers IPA/DEB.
+- [x] Documentation de contraintes IPA, DEB, SSH et iOS 27.0.1.
+- [ ] Vérifier l’état CI réel et corriger tout échec.
+- [ ] Ajouter un vrai projet Xcode, les targets iOS/macOS et des builds reproductibles.
+- [ ] Activer scans de dépendances et de secrets.
 
-## Phase 3 — On-device diagnostics
-- [ ] Add public-API checks for OS/app versions and app-visible state.
-- [ ] Add battery state only through APIs actually exposed to the app.
-- [ ] Add storage/network checks with documented API limitations.
-- [ ] Export redacted reports and require consent before sharing.
+## Phase 1 — Application accessible
+- [ ] Tableau de bord SwiftUI complet avec statuts annoncés par VoiceOver.
+- [ ] Import de fichiers via les sélecteurs système.
+- [ ] Navigation VoiceOver, Dynamic Type, contraste et gestion clavier.
+- [ ] Tests UI et instructions de build reproductible.
 
-## Phase 4 — Desktop bridge, no mandatory iTunes/iCloud
-- [ ] Define a versioned device protocol with safe file streaming and digest verification.
-- [ ] Investigate libimobiledevice/usbmuxd support and licensing per desktop OS.
-- [ ] Implement read-only device discovery and pairing state first.
-- [ ] Test with real iPhones across supported iOS versions.
-- [ ] Add authorized IPA transfer/installation only where supported.
+## Phase 2 — Diagnostics iPhone
+- [ ] Vérifications utilisant les API publiques disponibles.
+- [ ] Réseau, stockage et batterie uniquement quand exposés et testables.
+- [ ] Rapports exportables, horodatés, avec sources, limites et redaction.
+- [ ] Consentement avant export ou partage de données.
 
-## Phase 5 — IPA inspection and installation
-- [ ] Parse IPA ZIP structure and Payload/*.app/Info.plist.
-- [ ] Validate signatures, entitlements, provisioning profiles, expiration, and device eligibility.
-- [ ] Use user-owned signing assets and protect keys in OS keychain.
-- [ ] Use documented signing and distribution methods only.
-- [ ] Verify installation with device-side evidence; transfer is not proof of installation.
+## Phase 3 — Compagnon de bureau et connexion
+- [ ] Définir un protocole local versionné, authentifié et borné.
+- [ ] Étudier les interfaces de pairing/developer prises en charge et les outils open source audités.
+- [ ] Détecter appareil, appairage et capacités en lecture seule.
+- [ ] Transfert par blocs, annulation, gestion d’erreurs et vérification SHA-256.
+- [ ] Tests sur iPhone physique; iTunes/iCloud non obligatoires comme dépendances produit.
 
-## Phase 6 — DEB inspection and guarded installation
-- [ ] Parse Debian ar archive and control metadata without executing maintainer scripts.
-- [ ] Detect architecture, dependencies, conflicts, scripts, and package-manager requirements.
-- [ ] Block installation on stock iOS; require an explicitly detected compatible jailbroken environment.
-- [ ] Review system-changing actions and scripts before confirmation.
-- [ ] Integrate only with a compatible package manager; do not blindly extract packages as root.
-- [ ] Test supported rootless/rootful environments and provide recovery guidance.
+## Phase 4 — IPA
+- [ ] Lire l’archive ZIP et Payload/*.app/Info.plist de manière sûre.
+- [ ] Vérifier signature, entitlements, provisioning, expiration, architecture et exigences iOS.
+- [ ] Expliquer clairement les raisons d’incompatibilité.
+- [ ] Implémenter uniquement les voies d’installation autorisées et compatibles.
+- [ ] Vérifier l’installation à partir de preuves côté appareil; transfert seul insuffisant.
 
-## Phase 7 — Optional specialized coding AI
-- [ ] Create a separate optional Swift code assistant module.
-- [ ] Prefer local models through a pluggable provider interface where hardware permits.
-- [ ] AI suggestions never count as test evidence.
-- [ ] Require explicit approval before AI-generated changes or device actions.
-- [ ] Do not send IPA files, logs, UDIDs, pairing records, or signing secrets to cloud models by default.
+## Phase 5 — SSH
+- [ ] Implémenter un client SSH avec authentification robuste.
+- [ ] Vérifier strictement la clé d’hôte et prévenir les attaques de type homme-du-milieu.
+- [ ] Garder les clés privées dans le stockage sécurisé du système; ne jamais les journaliser.
+- [ ] Implémenter transfert SFTP/SSH avec chemins sûrs, limites de taille et intégrité.
+- [ ] Mode root séparé et désactivé par défaut; uniquement vers un serveur root déjà activé et explicitement autorisé.
+- [ ] Tests sur serveur contrôlé : mauvais mot de passe/clé, clé d’hôte modifiée, délai, déconnexion et permissions.
+- [ ] Ne jamais présenter SSH comme un moyen d’obtenir root sur iOS standard.
 
-## Release gate
-A release is not ready until CI passes, the iOS app builds with Xcode, security review is complete, and device-specific features are validated on physical devices. Simulator/QEMU results are not physical-device proof.
+## Phase 6 — DEB et environnements modifiés
+- [ ] Analyser les archives ar/control sans exécuter de scripts de mainteneur.
+- [ ] Détecter architecture, dépendances, conflits et scripts.
+- [ ] Bloquer l’installation sur iOS standard.
+- [ ] Prendre en charge un gestionnaire de paquets seulement pour un environnement modifié compatible, détecté et testé.
+- [ ] Prévisualiser les changements, demander confirmation et fournir une procédure de récupération.
 
+## Phase 7 — Qualité et release
+- [ ] CI verte sur les plateformes et versions d’outils déclarées.
+- [ ] Tests unitaires, UI, sécurité, accessibilité et installation.
+- [ ] Tests physiques couvrant chaque version/modèle annoncé.
+- [ ] SBOM, licences, scans dépendances/secrets, notes de version.
+- [ ] Matrice de support publiée avec PASS / FAIL / PARTIAL / BLOCKED / NOT VALIDATED.
+- [ ] Aucune release présentée comme complète tant que les critères ci-dessus ne sont pas démontrés.
 
-## iOS 27.0.1 compatibility gate
-- [ ] Build with an Xcode/iOS SDK that supports iOS 27.
-- [ ] Validate install, launch, file import, permissions, and VoiceOver on a physical iOS 27.0.1 device.
-- [ ] Keep iOS 17 as the package minimum unless a specific feature requires a higher version; use availability checks.
-- [ ] Do not label iOS 27.0.1 as supported until build, CI, and physical-device evidence are recorded.
+## Cible iOS 27.0.1
+- [ ] Build avec Xcode/SDK compatible.
+- [ ] Tester installation, lancement, import, permissions et VoiceOver sur appareil physique iOS 27.0.1.
+- [ ] Conserver les checks de disponibilité des API.
+- [ ] Ne pas annoncer iOS 27.0.1 comme pris en charge sans preuve.
+
+## Règles de validation
+- PASS : test reproductible exécuté avec preuve.
+- FAIL : test exécuté et échec observé.
+- PARTIAL : implémentation ou validation incomplète.
+- BLOCKED : limite de plateforme ou prérequis absent.
+- NOT VALIDATED : aucune preuve suffisante.
+- Simulateur ≠ preuve sur appareil physique.
