@@ -56,3 +56,7 @@ Package tests validate code behavior only; they do not prove iPhone hardware acc
 ## Security
 
 Never upload device logs, identifiers, pairing records, diagnostic reports, or package contents without explicit user consent. Do not store Apple Account passwords, 2FA codes, or private signing keys in this repository.
+
+
+## iOS 27.0.1 compatibility
+The primary target is **iOS 27.0.1**. The Swift package currently declares iOS 17 as its minimum deployment target; that is not proof of compatibility with iOS 27.0.1. A complete Xcode app project, a build using an SDK that supports iOS 27, and physical-device validation are still required. Status: **NOT VALIDATED**. See `docs/IOS_COMPATIBILITY.md`.
