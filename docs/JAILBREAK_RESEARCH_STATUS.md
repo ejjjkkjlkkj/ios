@@ -475,3 +475,30 @@ The iPhone 16 firmware catalog still identifies build 24A446 for iPhone17,3, but
 - PR #1 remains open and draft; GitHub currently reports `mergeable: false`. Resolve the branch/base conflict state and rerun CI before considering it ready for review or merge. No merge performed.
 - Latest research-report commit `6385ecedc5235a766a5a696846e1125afc387e3b` has no check-runs returned yet. Its CI state is **NOT VALIDATED**, not PASS.
 - PR #2's focused workflow passed, but its review-bot status was failed and the bot reported a usage limit; treat review approval as **NOT VALIDATED** until an actual code review is completed.
+
+## Follow-up from user-provided IPSW Downloads page — 2026-10-17
+
+The user supplied the visible page for iOS 27.0.1 (24A446), iPhone 16. It states the firmware is signed, names `iPhone17,3_27.0.1_24A446_Restore.ipsw`, and says downloads redirect to Apple servers rather than being mirrored by IPSW Downloads. This supports the catalog/source-routing description only. The message contains no completed-download path, byte count, final Apple CDN URL, SHA-256, or local manifest output.
+
+### Latest feature-head checks
+
+Commit `c095907e82805ad53c2c0f3a61df53913d83cd5d` has three completed checks:
+- Swift tests: **PASS**.
+- KernelScope test workflow: **PASS**.
+- Firmware-audit workflow: **FAIL** — `test_missing_manifest_is_partial` expected `PARTIAL`, got `NOT_VALIDATED`. The workflow log confirms four other firmware-audit tests passed and this one failed.
+- Latest PR #1 metadata reports `mergeable: true`; PR remains open and unmerged. This does not mean CI is green.
+- PR #2 contains the one-line correction and its focused CI passed, but its automated code review failed/was rate-limited. Do not treat that as approved review or assume the correction is on PR #1.
+
+Failure log: https://github.com/ejjjkkjlkkj/ios/actions/runs/38974772898/job/117221448056
+PR #1: https://github.com/ejjjkkjlkkj/ios/pull/1
+PR #2: https://github.com/ejjjkkjlkkj/ios/pull/2
+
+### Evidence status after the supplied page
+
+- Firmware marked signed by third-party catalog: **PASS (catalog claim only)**.
+- Exact IPSW present locally and complete: **NOT VALIDATED**.
+- Local SHA-256 / archive integrity / BuildManifest product identity: **NOT DONE**.
+- iPhone 16 / `iPhone17,3` / `D47AP` / `t8140` jailbreak, root SSH, or reboot persistence: **NOT VALIDATED**.
+- Calif's public iPhone 18 Pro demo does not establish iPhone 16 compatibility; no public reproducible target-specific jailbreak was found in reviewed sources.
+
+Next safe gate: once the download finishes, record the exact path, byte size and SHA-256, then test archive readability and parse `BuildManifest.plist` read-only. Do not restore the phone or run payloads as part of this audit.
