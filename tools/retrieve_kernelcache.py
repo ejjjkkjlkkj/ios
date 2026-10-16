@@ -28,7 +28,7 @@ def fetch_metadata(timeout: int = 30) -> dict:
         raise ValueError("Metadata response has no firmware list")
     matches = [item for item in firmwares if isinstance(item, dict)
                and item.get("version") == VERSION and item.get("buildid") == BUILD
-               and item.get("identifier") == MODEL]
+               ]
     if len(matches) != 1:
         raise ValueError(f"Expected exactly one {MODEL} {VERSION} ({BUILD}) record; found {len(matches)}")
     item = matches[0]
