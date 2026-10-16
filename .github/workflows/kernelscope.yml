@@ -6,6 +6,7 @@ on:
       - "tools/kernelscope.py"
       - "tools/retrieve_kernelcache.py"
       - "tools/darwin_vm_audit.py"
+      - "tools/verify_target_firmware.py"
       - "tests/**"
       - "docs/KERNELSCOPE.md"
       - "docs/IPHONE16_IOS27_KERNEL.md"
@@ -38,6 +39,6 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax check
-        run: python -m py_compile tools/kernelscope.py tools/retrieve_kernelcache.py tools/darwin_vm_audit.py tests/test_kernelscope.py tests/test_retrieve_kernelcache.py tests/test_darwin_vm_audit.py
+        run: python -m py_compile tools/kernelscope.py tools/retrieve_kernelcache.py tools/darwin_vm_audit.py tools/verify_target_firmware.py tests/test_kernelscope.py tests/test_retrieve_kernelcache.py tests/test_darwin_vm_audit.py tests/test_verify_target_firmware.py
       - name: Unit tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
