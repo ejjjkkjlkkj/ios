@@ -96,3 +96,18 @@ This repository can automate artifact collection, static analysis, differential 
 3. Track Calif's official publication and compare any disclosed supported-device/build matrix before considering physical-device testing.
 4. Keep all exploit compatibility, kernel boot, and physical root claims `NOT_VALIDATED` until backed by reproducible evidence.
 
+## Target IPSW verification tool — 2026-10-16
+
+Added `tools/verify_target_firmware.py` and synthetic tests in `tests/test_verify_target_firmware.py`.
+
+Run against an already-downloaded IPSW:
+
+```sh
+python tools/verify_target_firmware.py path/to/iPhone17,3_27.0.1_24A446_Restore.ipsw --out target-firmware-report.json
+```
+
+The verifier calculates SHA-256, checks ZIP CRC integrity, parses the unique `BuildManifest.plist`, and compares ProductType, ProductVersion, ProductBuildVersion, and BuildIdentities device classes with the requested target. A mismatch fails closed. The default target is iPhone17,3 / D47AP / iOS 27.0.1 / 24A446.
+
+The tool does **not** download firmware, verify Apple's cryptographic signature, decrypt IMG4/AEA payloads, exploit the device, flash firmware, or prove a physical jailbreak. Its success means only that the local archive is structurally readable and its manifest metadata matches the requested target. Apple authenticity remains `NOT_VALIDATED`.
+
+The CI workflow now syntax-checks this tool and its tests and runs the full unittest discovery suite. CI results remain unverified until a matching GitHub Actions run is observed.
