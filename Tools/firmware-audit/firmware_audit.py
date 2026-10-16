@@ -78,6 +78,7 @@ def audit_ipsw(path: str, *, hash_kernelcache: bool = True) -> dict[str, Any]:
             if manifest_name not in names:
                 report["errors"].append("BuildManifest.plist is missing.")
                 report["archive_integrity"] = "PARTIAL"
+                report["status"] = "PARTIAL"
                 return report
             manifest_bytes = archive.read(manifest_name)
             manifest = plistlib.loads(manifest_bytes)
