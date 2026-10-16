@@ -3,6 +3,9 @@ import importlib.util
 import tempfile
 import unittest
 import zipfile
+import io
+import json
+from unittest.mock import patch
 from pathlib import Path
 
 MODULE_PATH = Path(__file__).parents[1] / "tools" / "retrieve_kernelcache.py"
@@ -15,6 +18,26 @@ class KernelRetrieverTests(unittest.TestCase):
         self.assertEqual(retriever.MODEL, "iPhone17,3")
         self.assertEqual(retriever.VERSION, "27.0.1")
         self.assertEqual(retriever.BUILD, "24A446")
+
+
+    def test_metadata_requires_exact_version_and_build(self):
+        payload = {
+            "identifier": "iPhone17,3",
+            "firmwares": [{
+                "version": "27.0.1",
+                "buildid": "24A446",
+                "url": "https://updates.example.invalid/firmware.ipsw",
+                "sha1sum": "a" * 40,
+                "filesize": 123,
+                "signed": True,
+            }],
+        }
+        response = io.BytesIO(json.dumps(payload).encode())
+        response.geturl = lambda: retriever.METADATA_URL
+        with patch("urllib.request.urlopen", return_value=response):
+            metadata = retriever.fetch_metadata()
+        self.assertEqual(metadata["identifier"], "iPhone17,3")
+        self.assertEqual(metadata["sha1"], "a" * 40)
 
     def test_safe_member_rejects_traversal_and_windows_drive(self):
         self.assertTrue(retriever.safe_member("Firmware/kernelcache"))
