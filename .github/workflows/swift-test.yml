@@ -15,9 +15,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Select Swift toolchain
+      - name: Swift toolchain
         run: swift --version
       - name: Validate package
         run: swift package describe
-      - name: Run unit tests
+      - name: Test core
         run: swift test
+      - name: Check patch whitespace
+        run: git diff --check
