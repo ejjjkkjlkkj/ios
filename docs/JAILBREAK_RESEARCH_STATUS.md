@@ -782,3 +782,47 @@ Sources:
 - vphone-cli exact-build evidence: `UPSTREAM_REPORTED_VM_ONLY`.
 - Public, reproducible physical jailbreak for iPhone17,3 / T8140 / 24A446: `NOT_FOUND_IN_REVIEWED_SOURCES`.
 - Physical root SSH, arbitrary DEB installation, and persistence: `NOT_VALIDATED`.
+
+
+## Additional GitHub research — 2026-10-17 (Liter8, vphone-cli 2.6.x, and Calif demo)
+
+### Liter8: real-device evidence, but only for iPhone 11
+
+The public `Xplo8E/Liter8` README reports a tethered iOS 27 jailbreak based on usbliter8 for **iPhone 11 / n104ap only**. It marks iOS 27.0.1 build `24A446` as “run” for that device and says the test involved erase/restore, normal boot, then reboot and boot again. It also lists important missing functionality: SEP, passcode, cellular, Apple services, and reliable tweak injection. The README marks iPhone 11 Pro/Pro Max profiles experimental.
+
+| Claim | Status | Assessment |
+|---|---|---|
+| Public iOS 27.0.1 jailbreak project with reported physical-device testing exists | `REPORTED_DEVICE_PASS` | Liter8 README reports iPhone 11 / n104ap at 24A446 |
+| Liter8 supports iPhone17,3 / T8140 | `OUT_OF_SCOPE` | Maintainer explicitly claims iPhone 11 only; no A18/T8140 port validated |
+| Liter8 meets untethered/persistence requirement | `FAIL_FOR_REQUIREMENT` | It is explicitly tethered and requires Mac + pwn DFU for boot |
+| Liter8 proves target physical root SSH / DEB install | `NOT_VALIDATED_FOR_TARGET` | Reported capabilities are for a different board and exploit path |
+
+Source: https://github.com/Xplo8E/Liter8
+
+### vphone-cli: exact build boots in a custom virtual guest
+
+The current upstream compatibility guide records that iPhone17,3 / iOS 27.0.1 build 24A446 failed first boot with older bundles because the TXM selector-24 pre-check rejected binaries. Upstream says the `txm-boot-precheck_admission` patch fixes this in the custom guest; bundle 2.6.0 is identified as the first release carrying the patch. The related issue reports successful guest creation and a responding `vphoned` service with the specified pairing.
+
+This is useful evidence for reproducing a **virtual guest boot issue**, not evidence that the patch provides a physical-device jailbreak, bypasses physical secure boot, or yields root SSH on an actual iPhone.
+
+Sources:
+- https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md
+- https://github.com/Lakr233/vphone-cli/issues/596
+- https://github.com/Lakr233/vphone-cli
+
+### Calif: significant demonstration, but no public reproducible tool found
+
+Reporting dated 2026-10-16 says Calif demonstrated an untethered iOS 27.0.1 jailbreak on an iPhone 18 Pro at Hexacon, with root SSH returning after reboot. The exploit chain and vulnerabilities were not disclosed in the reviewed coverage, and no public tool was reported as released. The reported device is iPhone 18 Pro / T8160, not the target iPhone 16 / iPhone17,3 / T8140. This is a reported live demonstration, not a source-available implementation or proof of cross-device compatibility.
+
+Sources:
+- https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- https://pasqualepillitteri.it/en/news/24541/jailbreak-iphone-18-pro-ios-27-calif
+
+### Updated target verdict
+
+- Liter8 on iPhone 11 / 24A446: `UPSTREAM_REPORTED_DEVICE_TEST`; tethered, incomplete, and not transferable to T8140 without evidence.
+- vphone-cli on iPhone17,3 / 24A446: `UPSTREAM_REPORTED_VM_PASS`; VM-only.
+- Calif iOS 27.0.1 untethered demo: `REPORTED_DEMO_NO_PUBLIC_TOOL_FOUND`; different hardware and undisclosed chain.
+- Public, reproducible physical jailbreak for iPhone 16 / iPhone17,3 / T8140 / 24A446: `NOT_FOUND_IN_REVIEWED_SOURCES`.
+- Physical root SSH, arbitrary DEB installation, and untethered reboot persistence for the target: `NOT_VALIDATED`.
+- No physical device was modified, no firmware was flashed, and no PR was merged in this research pass.
