@@ -3,7 +3,7 @@ import Foundation
 public struct LocalDiagnosticEngine: Sendable {
     public init() {}
 
-    public func run(productVersion: String, capabilities: [DeviceCapability] = .baseline,
+    public func run(productVersion: String, capabilities: [DeviceCapability] = DeviceCapability.baseline,
                     now: Date = Date()) -> DiagnosticReport {
         let checks = capabilities.map { capability in
             let status: DiagnosticStatus
