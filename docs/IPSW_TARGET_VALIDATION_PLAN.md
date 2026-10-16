@@ -64,7 +64,7 @@ This is only a first-pass file/hash/listing check. It does not validate the mani
 ## Current status at authoring time
 
 - Exact target tuple: catalog metadata cross-checked, not locally verified.
-- IPSW downloaded: **NOT DONE**.
+- IPSW download page supplied by user; page claims signed and says file downloads redirect to Apple servers. Completed local download: **NOT VALIDATED**.
 - SHA-256 of target IPSW: **NOT DONE**.
 - Manifest identity: **NOT DONE**.
 - Component inventory: **NOT DONE**.
