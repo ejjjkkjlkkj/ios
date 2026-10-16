@@ -206,3 +206,14 @@ The new test commit has been pushed to `feature/phonebridge-kernelscope-audit`, 
 This is a meaningful new public lead for iOS 27 research, but **not a solution for the iPhone 16 target**. Do not port its device-specific patch profiles or infer compatibility from the shared build number. Before any future physical experiment, review the full code and recovery path; its documented restore step is destructive. This repository's audit workflow remains read-only and must not execute Liter8 or restore firmware.
 
 Source checked: https://github.com/Xplo8E/Liter8 (README and device/build matrix, reviewed 2026-10-17).
+
+
+## CI follow-up — 2026-10-17
+
+The earlier PR check for run `38973232945` used the PR merge base `ebcc98ea063c67b5469e4188d903d75b64d2d07f`. That base predates the current `main` head `b7372deff1dfc598e32405bab71404a30605f614`, which includes the baseline capability fix and the firmware-audit missing-manifest status correction in the repository history. The dedicated corrective branch's run `38973187844` completed successfully; the PhoneBridge PR run remains a historical failure on its earlier merge snapshot, not evidence that the current `main` source still lacks the fix.
+
+- Current `main` head: https://github.com/ejjjkkjlkkj/ios/commit/b7372deff1dfc598e32405bab71404a30605f614
+- Corrective branch CI: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973187844
+- Historical failing PR CI: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973232945
+
+**Required validation:** obtain a fresh Actions run for the current PR head against the current base before marking the PR CI green. KernelScope success alone does not establish that the complete workflow passes. No PR merge was performed.
