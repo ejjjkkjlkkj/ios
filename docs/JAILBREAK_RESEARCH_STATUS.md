@@ -386,3 +386,44 @@ Run links:
 - https://github.com/ejjjkkjlkkj/ios/actions/runs/38974105579
 
 Required next code action: rebase/port the already CI-tested missing-manifest status correction into the PhoneBridge branch through a reviewed change, then rerun the complete workflow on the resulting exact head. Do not mark overall CI PASS until that matching run succeeds.
+
+
+## Follow-up research and CI log verification — 2026-10-17
+
+### CI failure confirmed from the job log
+The latest feature-head documentation commit `b60ad51d865c168fcf62d694872ff1aefbdbde0f` has:
+- KernelScope run `38974133899`: **PASS**.
+- Swift CI run `38974128069`: **PASS**.
+- Swift and Firmware Audit CI run `38974133879`: **FAIL**.
+- The failing assertion is confirmed from the job log: `test_missing_manifest_is_partial` expected `PARTIAL` but received `NOT_VALIDATED`. Four other firmware-audit tests passed.
+- PR #2 contains the one-line fix for that exact return path and its own CI run passed, but PR #2 is still open. Do not claim the feature PR is green or the correction is on `main`.
+
+Evidence:
+- Failed job: https://github.com/ejjjkkjlkkj/ios/actions/runs/38974133879
+- KernelScope: https://github.com/ejjjkkjlkkj/ios/actions/runs/38974133899
+- Swift CI: https://github.com/ejjjkkjlkkj/ios/actions/runs/38974128069
+- Fix PR: https://github.com/ejjjkkjlkkj/ios/pull/2
+
+### Primary-source check: Calif announcement
+Calif's own post dated 2026-10-16 lists four iPhone demonstrations and says “Everything will be released in due time.” It does not provide a release date, exploit identifiers, source code, a downloadable jailbreak, or a device compatibility matrix. This is evidence of a stated future intention, not a public release and not evidence of iPhone 16 support.
+
+Primary source: https://blog.calif.io/p/iphone
+
+Independent reporting describes the demonstrated device as iPhone 18 Pro / `iPhone19,2` / `T8160` on build `24A446`. The phone was unlocked using its normal passcode after reboot before root SSH was shown. This does not establish passcode bypass, nor does the shared build number establish compatibility with iPhone 16 / `iPhone17,3` / `T8140`.
+
+Coverage: https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+
+### Target IPSW metadata cross-check
+A current third-party firmware catalog lists iOS 27.0.1 build `24A446` for iPhone 16 `iPhone17,3`, board `D47AP`, platform `t8140`, as signed. This is catalog metadata only; it is not a local artifact, a verified Apple signing response, or a cryptographic authenticity result.
+
+Catalog: https://ipsw.me/iOS/27.0.1/
+
+No IPSW was downloaded in this follow-up. The exact artifact is roughly 12 GB according to catalogs, so archive integrity, local SHA-256, BuildManifest identity, and component inventory remain **NOT DONE** until an artifact is actually obtained and checked.
+
+### Current decision
+- Latest observed full feature CI: **FAIL** (firmware-audit regression test).
+- KernelScope and Swift checks on the same commit: **PASS**.
+- Exact target firmware static analysis: **BLOCKED** pending local IPSW acquisition and identity verification.
+- Public reproducible jailbreak for iPhone 16 / `T8140` / iOS 27.0.1: **NOT_FOUND** in reviewed sources.
+- Physical root SSH / reboot persistence on the target iPhone: **NOT_VALIDATED**.
+- No PR was merged; no device restore or modification was performed.
