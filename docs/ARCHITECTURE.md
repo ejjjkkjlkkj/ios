@@ -41,3 +41,7 @@ A successful unit test validates code behavior only. It is not proof that an iPh
 - Installing arbitrary apps from an ordinary iOS app without a supported signing/distribution mechanism.
 - Claiming access to private iOS APIs or hardware data without evidence.
 - Uploading device data without informed consent.
+
+
+## iOS 27.0.1 compatibility target
+The requested primary target is iOS 27.0.1. The current Swift package minimum deployment version is iOS 17, which is a lower bound and does not establish compatibility with the latest iOS release. The app must be built with an Xcode/iOS SDK that supports iOS 27, use availability checks for newer APIs, and be validated on a physical device running iOS 27.0.1. Current status: **NOT VALIDATED**. See `IOS_COMPATIBILITY.md`.
