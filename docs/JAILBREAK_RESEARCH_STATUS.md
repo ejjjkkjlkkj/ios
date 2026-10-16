@@ -217,3 +217,24 @@ The complete CI failure is **not explained solely by a stale PR merge base**. Th
 - Failing PhoneBridge PR CI: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973232945
 
 **Required validation:** incorporate the tested correction through an explicitly reviewed change and obtain a fresh CI run for the resulting PR head. KernelScope success alone does not establish that the complete workflow passes. No PR merge was performed.
+
+
+## Follow-up work — 2026-10-17
+
+### Firmware audit correction re-proposed against current main
+
+Created branch `fix/firmware-audit-main-missing-manifest-status` from current `main`, applied the one-line status correction, and opened PR #2:
+- PR: https://github.com/ejjjkkjlkkj/ios/pull/2
+- Commit: https://github.com/ejjjkkjlkkj/ios/commit/4a30bf2b94461c440678ab8a5c9928f979d6101d
+- CI run: https://github.com/ejjjkkjlkkj/ios/actions/runs/38973637302
+
+At the time of this update, PR #2 is open and the CI run is queued. The patch has not been merged; final validation is pending.
+
+### Fresh public-source check for the target device
+
+The latest reporting on Calif's Hexacon demonstration still describes an iPhone 18 Pro on iOS 27.0.1 with root SSH returning after reboot, but says the exploit details and tool have not been released. No public source found in this check establishes that this chain supports iPhone 16 / `iPhone17,3` / `T8140`. The iPhone 11-only Liter8 lead remains device-specific and is not evidence for T8140.
+
+- Reporting, 2026-10-16: https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- Liter8 upstream: https://github.com/Xplo8E/Liter8
+
+Target-device jailbreak and physical root SSH remain `NOT_VALIDATED`. No IPSW was downloaded or analyzed in this work session, and no physical device test was performed.
