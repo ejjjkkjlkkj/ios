@@ -23,6 +23,7 @@ PhoneBridge vise à devenir un centre de contrôle complet de l’iPhone : appli
 Une application iOS standard ne peut pas obtenir librement un shell root, activer un serveur SSH système, contourner la signature de code ou installer arbitrairement n’importe quelle application. **SSH root sans jailbreak n’est possible que si l’appareil dispose déjà d’un service root autorisé**; l’application ne peut pas créer ce privilège. Les installations IPA restent dépendantes de méthodes de signature/distribution compatibles. Les fichiers DEB ne sont pas des applications installables normalement sur iOS standard.
 
 ## Documentation
+- [Récupération du kernelcache iPhone 16 / iOS 27.0.1](docs/IPHONE16_IOS27_KERNEL.md)
 
 - [Vision produit et critères de validation](docs/PRODUCT_SCOPE.md)
 - [Architecture](docs/ARCHITECTURE.md)
