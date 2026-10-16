@@ -427,3 +427,27 @@ No IPSW was downloaded in this follow-up. The exact artifact is roughly 12 GB ac
 - Public reproducible jailbreak for iPhone 16 / `T8140` / iOS 27.0.1: **NOT_FOUND** in reviewed sources.
 - Physical root SSH / reboot persistence on the target iPhone: **NOT_VALIDATED**.
 - No PR was merged; no device restore or modification was performed.
+
+## Exact-head CI recheck — 2026-10-17 (commit 9c979c7eb1b226be5c6c4263338c383d5f9ec38b)
+
+The three check-runs attached to this exact report/feature head have now completed:
+- Firmware audit test job 38974356968 / job 117220087219: **FAIL**.
+- Other two check-runs 38974356964 and 38974352904: **PASS**.
+- The failed job log confirms the defect: Tools/firmware-audit/test_firmware_audit.py:46, test test_missing_manifest_is_partial, expected report status PARTIAL, got NOT_VALIDATED. The other firmware-audit tests in that run passed.
+- This is a real failing CI check on the current feature head, not a pending result. Do not label the full PR CI as green.
+- The focused correction remains available in open PR #2: https://github.com/ejjjkkjlkkj/ios/pull/2 . It has not been merged, and this report does not claim its fix is present on this branch.
+
+Exact failed run: https://github.com/ejjjkkjlkkj/ios/actions/runs/38974356968
+
+### Research delta
+A fresh source review found no published Calif jailbreak tool or compatibility statement for iPhone 16 / iPhone17,3 / D47AP / T8140. The documented Liter8 upstream explicitly limits its validated target to iPhone 11 (n104ap); its own table marks other models as unverified/experimental, so it is not a valid basis to claim iPhone 16 support: https://github.com/Xplo8E/Liter8
+
+The iPhone 16 firmware catalog still identifies build 24A446 for iPhone17,3, but this remains third-party metadata. The IPSW has **not** been downloaded, hashed, or parsed locally. No target-device test has been performed.
+
+### Current gates
+- Exact feature-head full CI: **FAIL**.
+- Other two checks on that head: **PASS**.
+- Firmware audit missing-manifest behavior: **FAIL**, correction awaiting integration.
+- Calif public tool/source release for target: **NOT FOUND** in reviewed sources.
+- iPhone 16 target IPSW local inspection: **NOT DONE**.
+- Physical jailbreak/root/reboot-persistence proof: **NOT VALIDATED**.
