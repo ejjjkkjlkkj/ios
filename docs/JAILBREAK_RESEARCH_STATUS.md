@@ -334,3 +334,35 @@ https://github.com/ejjjkkjlkkj/ios/pull/2
 - Target-specific static kernel analysis: **BLOCKED** pending IPSW.
 - Public jailbreak chain for iPhone16,3 / `iPhone17,3` / `D47AP` / `T8140` / `24A446`: **NOT_FOUND** in the sources reviewed.
 - Physical root SSH and untethered persistence on the target iPhone: **NOT_VALIDATED**.
+
+
+## CI and source recheck — 2026-10-17 (latest head)
+
+### Exact commit checks
+For feature commit `57560db9974f39688a165064c272a5f8a23ee3c1`:
+- KernelScope run `38974006158`: **PASS**.
+- Swift and Firmware Audit CI run `38974006117`: **IN_PROGRESS** at the time of this check; do not mark the complete PR green.
+- The commit check-runs endpoint reports three checks: two **PASS**, one **IN_PROGRESS**.
+- PR #1 remains **OPEN / NOT MERGED**, base `main`.
+- PR #2 remains **OPEN / NOT MERGED**; its earlier targeted firmware-audit correction run `38973637302` passed, but that does not merge the fix into `main`.
+
+Exact run links:
+- https://github.com/ejjjkkjlkkj/ios/actions/runs/38974006158
+- https://github.com/ejjjkkjlkkj/ios/actions/runs/38974006117
+- https://github.com/ejjjkkjlkkj/ios/pull/1
+- https://github.com/ejjjkkjlkkj/ios/pull/2
+
+### Fresh research recheck
+A new search on 2026-10-17 found no public, reproducible iPhone 16 / `iPhone17,3` / `D47AP` / `T8140` / iOS 27.0.1 jailbreak release. Recent reporting published 2026-10-16 describes Calif's demonstration on iPhone 18 Pro, with no public exploit/tool or published device support matrix. The described post-reboot sequence included normal passcode unlock before root SSH; it does not prove passcode bypass or T8140 compatibility.
+
+Sources:
+- https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- https://pasqualepillitteri.it/fr/news/24541/jailbreak-iphone-18-pro-ios-27-calif
+- https://github.com/Xplo8E/Liter8 (upstream still documents iPhone 11 / `n104ap` only)
+
+### Work status
+- Exact target IPSW downloaded and hashed: **NOT DONE**.
+- BuildManifest/product identity checked against a local artifact: **NOT VALIDATED**.
+- Target-specific static analysis: **BLOCKED** until the exact IPSW is acquired and its identity verified.
+- Physical root/SSH or reboot persistence on the user's iPhone 16: **NOT VALIDATED**.
+- Overall completion: **NOT PASS**. CI is not yet fully green for the exact feature commit at this observation.
