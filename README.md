@@ -25,6 +25,7 @@ Une application iOS standard ne peut pas obtenir librement un shell root, active
 ## Documentation
 - [Récupération du kernelcache iPhone 16 / iOS 27.0.1](docs/IPHONE16_IOS27_KERNEL.md)
 - [Intégration et audit statique Darwin VM](docs/DARWIN_VM_INTEGRATION.md) — la VM n'est pas un jailbreak physique.
+- [État de la recherche jailbreak iPhone 16 / iOS 27.0.1](docs/JAILBREAK_RESEARCH_STATUS.md) — registre de preuves, blocages et critères de validation.
 - Audit local read-only de checkout Darwin VM : `python tools/darwin_vm_audit.py <chemin-darwin-vm> --out artifacts/darwin-vm-audit.json`
 
 - [Vision produit et critères de validation](docs/PRODUCT_SCOPE.md)
