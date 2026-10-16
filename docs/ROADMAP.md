@@ -51,3 +51,10 @@
 
 ## Release gate
 A release is not ready until CI passes, the iOS app builds with Xcode, security review is complete, and device-specific features are validated on physical devices. Simulator/QEMU results are not physical-device proof.
+
+
+## iOS 27.0.1 compatibility gate
+- [ ] Build with an Xcode/iOS SDK that supports iOS 27.
+- [ ] Validate install, launch, file import, permissions, and VoiceOver on a physical iOS 27.0.1 device.
+- [ ] Keep iOS 17 as the package minimum unless a specific feature requires a higher version; use availability checks.
+- [ ] Do not label iOS 27.0.1 as supported until build, CI, and physical-device evidence are recorded.
