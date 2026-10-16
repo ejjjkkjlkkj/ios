@@ -15,9 +15,12 @@ on:
     paths:
       - "tools/kernelscope.py"
       - "tools/retrieve_kernelcache.py"
+      - "tools/darwin_vm_audit.py"
       - "tests/**"
       - "docs/KERNELSCOPE.md"
       - "docs/IPHONE16_IOS27_KERNEL.md"
+      - "docs/DARWIN_VM_INTEGRATION.md"
+      - "docs/JAILBREAK_RESEARCH_STATUS.md"
       - ".github/workflows/kernelscope.yml"
   workflow_dispatch:
 
