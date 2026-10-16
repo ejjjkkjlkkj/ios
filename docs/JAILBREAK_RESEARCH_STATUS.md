@@ -701,3 +701,45 @@ The currently inspected upstream repository is `jprx/darwin-vm`. Its current REA
 
 ### Target conclusion unchanged
 The exact `24A446` virtual-guest boot is a useful analysis lead, but it does not provide a public, reproducible jailbreak chain for a physical iPhone 16 `T8140`. Physical root, root SSH, arbitrary DEB installation and persistence remain `NOT_VALIDATED`.
+
+
+## Additional GitHub research — 2026-10-17 (ABrake27 and live CI)
+
+### New public repository reviewed
+
+vvirei333/ABrake27 describes a Linux-native reverse-engineering workflow and a PoC related to the iOS Developer Mode / AMFI lockdown path. Its published comparison is explicitly for **iPhone14,5** (iPhone 13) and compares iOS 27.0.1 with 27.2; it is not a T8140 / iPhone17,3 target-specific analysis.
+
+| Claim | Status | Assessment |
+|---|---|---|
+| A new public iOS 27 reverse-engineering repository exists | `REPOSITORY_FOUND` | Public source and research documents are available. |
+| It provides a complete jailbreak | `NOT_ESTABLISHED` | The README describes Developer Mode activation through Apple's normal lockdown protocol, not a complete kernel privilege-escalation + persistence chain. |
+| Its iPhone14,5 findings apply to iPhone17,3 / T8140 | `NOT_VALIDATED` | Different device family and firmware artifacts; no transfer of compatibility is justified. |
+| Its ASTC/DDS overflow path is behaviorally confirmed | `NOT_CONFIRMED_BY_REPOSITORY_DESCRIPTION` | The README itself calls for behavioral confirmation of the proposed path. Treat it as a research hypothesis, not a demonstrated exploit. |
+| It supplies physical root SSH / arbitrary DEB / untethered persistence for this target | `NOT_FOUND` | No target-specific reproducible chain established by the reviewed materials. |
+
+Source: https://github.com/vvirei333/ABrake27
+
+### Exact-build virtual guest details
+
+The upstream vphone-cli compatibility guide and research index explicitly identify iPhone17,3 / 24A446 virtual-guest testing, including guest-side DeviceHub display research. These are useful for static/dynamic Darwin research on a virtualized custom guest, but remain **VM-only evidence**. They do not demonstrate that the same boot patch works on a physical iPhone or that the physical secure-boot/security boundary has been bypassed.
+
+Sources:
+- https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md
+- https://github.com/Lakr233/vphone-cli/blob/main/Research/Firmware/txm_selector24_cms_gate.md
+- https://github.com/Lakr233/vphone-cli/blob/main/Research/Guest/devicehub_screen_viewing.md
+
+### CI snapshot observed during this review
+
+For feature-branch commit `583fd4eaa4f8f359285a00a2c1e46d79dc329eb0`, the latest connector query returned:
+- KernelScope run **38976354221**: `SUCCESS`.
+- Swift and Firmware Audit CI run **38976354161**: `IN_PROGRESS` at query time; no final conclusion available in that response.
+
+This is a time-of-check snapshot, not proof that all CI has passed. Recheck the run before treating the branch as green.
+
+### Updated verdict
+
+- Exact build 24A446 boots in a custom virtual guest: `UPSTREAM_REPORTED_VM_PASS`.
+- ABrake27 is a potentially relevant static-analysis lead, but not a verified jailbreak for the target: `PARTIAL`.
+- Public reproducible physical jailbreak for iPhone17,3 / T8140 / 24A446: `NOT_FOUND_IN_REVIEWED_SOURCES`.
+- Physical root SSH, arbitrary DEB installation, and reboot persistence: `NOT_VALIDATED`.
+- No device was modified, no firmware was flashed, and no PR was merged in this research pass.
