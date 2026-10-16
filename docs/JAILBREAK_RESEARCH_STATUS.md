@@ -163,3 +163,23 @@ The public video reportedly shows the iPhone 18 Pro being unlocked with its norm
 - iPhone 16 / T8140 compatibility: **NOT_VALIDATED**.
 - Public, reproducible jailbreak package for the exact target: **NOT_FOUND** in the sources reviewed.
 - Physical root/SSH/persistence on the user's device: **NOT_VALIDATED**.
+
+
+## Follow-up research and verifier test hardening — 2026-10-17
+
+### Fresh source cross-check
+- Apple's official security-release index still lists iOS 27.0.1 as having no published CVE entries. This means no CVE IDs are published for that release; it does not establish that the release has no vulnerabilities: https://support.apple.com/fr-fr/100100
+- Decrypt's 16 October coverage explicitly distinguishes the two Calif-associated crash/denial-of-service bugs from the demonstrated jailbreak; no source reviewed ties those bugs to the jailbreak chain: https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- The report describes a normal passcode unlock after reboot before root SSH is shown. This does not establish a passcode bypass.
+- No new public reproducible package or T8140/iPhone17,3 compatibility evidence was found in this follow-up review.
+
+### Repository changes
+Extended `tests/test_verify_target_firmware.py` with:
+- duplicate root/nested manifest detection, which must fail closed and leave target identity unvalidated;
+- malformed plist handling;
+- stronger assertions for the missing-manifest case, including explicit `NOT_VALIDATED` for target identity and Apple authenticity.
+
+Commit: `5b225874b0c6b8e764a53e56336cbf607f8a466e`.
+
+### Validation state
+The new test commit has been pushed to `feature/phonebridge-kernelscope-audit`, but no matching Actions result was returned when queried. Therefore these added tests are **NOT_VALIDATED by CI** until a run for this commit is observed. The latest observed separate Firmware Audit CI failure remains unresolved; do not declare overall CI green.
