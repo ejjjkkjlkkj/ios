@@ -862,3 +862,35 @@ Sources:
 - Public, reproducible physical jailbreak for iPhone16 `iPhone17,3 / D47AP / T8140 / 24A446`: `NOT_FOUND_IN_REVIEWED_SOURCES`.
 - Physical root SSH, arbitrary DEB installation, and reboot persistence on this target: `NOT_VALIDATED`.
 - No device was modified, no firmware was restored, and no PR was merged in this pass.
+
+
+## Additional research — 2026-10-17 (fresh status check and VM source clarification)
+
+### Fresh public status cross-check
+
+A recently crawled iOS 27.0.1 status page continues to report no stable/public jailbreak for iPhone 16 and newer, and identifies Liter8 as experimental iPhone 11-only work. This is a secondary source, so it is a status cross-check rather than primary exploit evidence.
+
+Source: https://nathanlr.com/ios27-0-1-jailbreak/
+
+A firmware listing for the exact target continues to identify `iPhone17,3`, board `D47AP`, platform `t8140`, build `24A446`, and states that no public jailbreak is known for iPhone 16 on this build. Firmware signing/download status is not evidence of jailbreak compatibility.
+
+Source: https://www.applefirmwares.com/firmware/iPhone17%2C3/27.0.1
+
+### Important source distinction: darwin-vm supports emulated A14–A19 CPUs
+
+The public `Passw/jprx-darwin-vm` README reports that its QEMU-based Darwin environment can boot an iPhone17,3 / T8140 configuration to a root shell, and describes kernel/SPTM/TXM debugging. It explicitly says this is not a full iPhone emulator and does not provide the normal GUI, Wi-Fi, Bluetooth or SpringBoard. The tested matrix refers to iOS 27.0 beta 7 and iOS 26.6, not a demonstrated physical-device jailbreak on 27.0.1 (24A446).
+
+Source: https://github.com/Passw/jprx-darwin-vm
+
+| Claim | Status | Evidence boundary |
+|---|---|---|
+| QEMU Darwin guest can run a root shell for an emulated T8140 profile | `UPSTREAM_REPORTED_VM_CAPABILITY` | Project README; guest only |
+| This validates root on a physical iPhone 16 | `FALSE_INFERENCE` | Emulated root shell does not cross the physical-device trust boundary |
+| This proves exact 24A446 physical exploitability | `NOT_VALIDATED` | Documented tested versions differ; no physical chain provided |
+| Stable public jailbreak for iPhone17,3 / 24A446 | `NOT_FOUND_IN_REVIEWED_SOURCES` | No reproducible target-specific public tool found in this pass |
+
+### Updated conclusion
+
+The new cross-check did not find a public, reproducible jailbreak chain for physical iPhone 16 / `iPhone17,3 / D47AP / T8140 / 24A446`. Liter8/usbliter8 remain older-device-specific and tethered/experimental; darwin-vm and vphone-cli remain virtual-guest research; Calif remains a reported demonstration without a reviewed public implementation for this target.
+
+Target requirements still `NOT_VALIDATED`: physical root SSH, arbitrary DEB installation, and persistence across reboot. No device was modified, no IPSW was restored, and no PR was merged.
