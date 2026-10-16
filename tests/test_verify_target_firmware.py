@@ -59,7 +59,29 @@ class TargetFirmwareVerifierTests(unittest.TestCase):
                 archive.writestr("payload.bin", b"fixture")
             report = verify_ipsw(path)
             self.assertEqual(report["checks"]["build_manifest_unique"], "FAIL")
+            self.assertEqual(report["checks"]["target_identity"], "NOT_VALIDATED")
+            self.assertEqual(report["checks"]["apple_authenticity"], "NOT_VALIDATED")
             self.assertEqual(report["status"], "FAIL")
+
+    def test_duplicate_manifests_fail_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "fixture.ipsw"
+            with zipfile.ZipFile(path, "w") as archive:
+                archive.writestr("BuildManifest.plist", plistlib.dumps({"ProductType": "iPhone17,3"}))
+                archive.writestr("nested/BuildManifest.plist", plistlib.dumps({"ProductType": "iPhone17,3"}))
+            report = verify_ipsw(path)
+            self.assertEqual(report["checks"]["build_manifest_unique"], "FAIL")
+            self.assertEqual(report["observed"]["manifest_matches"], 2)
+            self.assertEqual(report["checks"]["target_identity"], "NOT_VALIDATED")
+            self.assertEqual(report["status"], "FAIL")
+
+    def test_malformed_manifest_raises_clear_parse_error(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "fixture.ipsw"
+            with zipfile.ZipFile(path, "w") as archive:
+                archive.writestr("BuildManifest.plist", b"not a plist")
+            with self.assertRaises((plistlib.InvalidFileException, ValueError)):
+                verify_ipsw(path)
 
 
 if __name__ == "__main__":
