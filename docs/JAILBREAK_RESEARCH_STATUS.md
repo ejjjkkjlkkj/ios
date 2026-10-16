@@ -559,3 +559,26 @@ Next evidence needed:
 2. For Airlift, record the upstream commit/release and exact supported device/build claims; treat any live test as a separate authorized, reversible file-access test.
 3. Keep privilege level, accessible path scope, write/read verification, reboot persistence, and physical-device root as separate test results.
 4. Do not label VM boot success or a `/var/mobile` file write as physical root or a complete jailbreak.
+
+
+## GitHub follow-up — Airlift caveats and iOS app port — 2026-10-17
+
+Additional source review found an important qualification:
+
+- Upstream issue [0xjohnnydev/airlift#4](https://github.com/0xjohnnydev/airlift/issues/4) is titled “streaming_zip_conduit is entitlement-gated on iOS 27 — PoC cannot stage on 24A437”. This documents a staging/entitlement obstacle in the original PoC path. It should not be silently treated as resolved for every device/build.
+- [AirliftSilence](https://github.com/YiHoooong/AirliftSilence) separately claims end-to-end file read, replacement and restoration on build 24A446, including surviving a reboot. The README does not identify the tested iPhone product type, board, or chip. Therefore it is **build-specific upstream-reported evidence, not proof for iPhone17,3 / D47AP / T8140**.
+- [AirliftSilence-iOS](https://github.com/YiHoooong/AirliftSilence-iOS) is a separate on-device app port and documents an unsigned IPA build. This is a delivery/UI variant of the same limited file-operation research, not a new privilege-escalation primitive and not evidence of root.
+- AirliftSilence explicitly changes the two call-recording announcement audio files under `/var/mobile/Library/CallServices/Greetings/default/`. Removing that announcement may violate call-recording consent laws. PhoneBridge should not make this modification by default; any research validation must use harmless test files and explicit authorization.
+
+### Updated confidence labels
+
+| Claim | Status |
+|---|---|
+| Airlift-family file-operation technique has public source code | `PUBLIC_POC` |
+| A third-party Windows port reports 24A446 read/write/restore success | `UPSTREAM_REPORTED` |
+| That test was performed on the exact iPhone 16 / D47AP / T8140 | `NOT_SPECIFIED` |
+| The original PoC's iOS 27 staging/entitlement issue is universally solved | `NOT_VALIDATED` |
+| Airlift grants kernel privileges, root SSH, or unrestricted system writes | `NOT_DEMONSTRATED` |
+| Airlift supplies a complete jailbreak for this target | `NOT_DEMONSTRATED` |
+
+Source review is not device execution. No Airlift binary was downloaded or run by this repository, and no physical device was modified.
