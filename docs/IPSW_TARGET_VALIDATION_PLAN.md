@@ -19,7 +19,7 @@ The firmware catalog lists this build as signed and approximately 12 GiB. This i
 ## Evidence gates
 
 1. **Acquisition** — obtain the exact IPSW from Apple's CDN or a source that resolves to Apple's CDN. Record final URL, UTC time, byte count, and HTTP result. Do not treat a partial download as an artifact.
-2. **Archive integrity** — confirm ZIP/IPS​W central directory and test archive readability. Record exact byte count and SHA-256. A successful hash proves identity for that file, not Apple's authenticity by itself.
+2. **Archive integrity** — confirm ZIP/IPSW central directory and test archive readability. Record exact byte count and SHA-256. A successful hash proves identity for that file, not Apple's authenticity by itself.
 3. **Manifest identity** — parse `BuildManifest.plist` without executing payloads. Confirm ProductVersion `27.0.1`, ProductBuildVersion `24A446`, and a build identity matching `iPhone17,3` / `D47AP` / `t8140`. If fields are missing or contradictory, stop and mark **FAIL** or **PARTIAL**, never infer compatibility from the filename.
 4. **Inventory** — enumerate kernelcache, device tree, iBoot/iBSS/iBEC, restore ramdisk, and relevant trust-cache artifacts by archive path, size, and SHA-256. Do not patch or repack them during initial inventory.
 5. **Static review** — identify format and architecture using read-only tooling; retain tool versions, commands, stdout/stderr, and hashes. Findings must cite the exact file hash and offset/symbol where applicable.
