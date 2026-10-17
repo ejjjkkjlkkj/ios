@@ -1171,3 +1171,24 @@ Référence : https://github.com/blacktop/ipsw-diffs/blob/main/iOS/27_0_24A437_v
 Référence publiée pour le téléchargement iPhone 16 : build `24A446`, appareil `iPhone17,3`, carte `D47AP`, plateforme `t8140`, SHA-256 attendu `fc87bb9da8c03d0154d87531950f4a170195f6663ee5208653fa7a26bafb9469`. La valeur doit être comparée au fichier effectivement reçu; elle ne remplace pas une vérification de provenance.
 
 Suite prévue à la réception : vérifier le hash, l'intégrité ZIP et les identifiants du BuildManifest; sauvegarder le JSON de résultat; ensuite examiner statiquement les métadonnées des composants pertinents sans exécution ni modification du téléphone.
+
+
+## Résultat du contrôle local communiqué par l'utilisateur — 2026-10-17
+
+L'utilisateur rapporte que PowerShell a terminé le calcul sur `C:\Users\adm\Downloads\iPhone17,3_27.0.1_24A446_Restore.ipsw` et a affiché `PASS` pour la comparaison SHA-256 avec la référence publiée. La taille affichée est `12 343 857 610` octets. Le texte copié contient des caractères ambigus (`0` / `U`) dans le hash; le statut est donc consigné comme **résultat rapporté, non vérifié indépendamment** tant que la sortie exacte ou le JSON d'inventaire n'a pas été examiné.
+
+Étape suivante sur le PC, depuis la racine du clone de ce dépôt :
+
+```powershell
+$ipsw = 'C:\Users\adm\Downloads\iPhone17,3_27.0.1_24A446_Restore.ipsw'
+python .\tools\ipsw_static_inventory.py $ipsw --check-iphone16-27.0.1 --output "$env:TEMP\iphone16-24A446-inventory.json"
+$inventoryExitCode = $LASTEXITCODE
+Write-Host "INVENTORY_EXIT_CODE=$inventoryExitCode"
+if (Test-Path -LiteralPath "$env:TEMP\iphone16-24A446-inventory.json") {
+    Get-Content -LiteralPath "$env:TEMP\iphone16-24A446-inventory.json" -Raw
+}
+python -m unittest tests.test_ipsw_static_inventory -v
+Write-Host "UNITTEST_EXIT_CODE=$LASTEXITCODE"
+```
+
+Ce traitement est une inspection statique locale : il ne restaure pas l'iPhone, n'exécute pas le firmware et ne modifie pas l'appareil. Ne considérer le résultat comme validé qu'après lecture des champs du manifest et des codes de sortie. La réussite du hash seul ne prouve ni l'authenticité Apple, ni l'existence d'une vulnérabilité exploitable, ni un jailbreak physique.
