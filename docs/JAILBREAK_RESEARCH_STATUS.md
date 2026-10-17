@@ -926,3 +926,29 @@ Sources:
 - Public, reproducible physical jailbreak for iPhone16 `iPhone17,3 / D47AP / T8140 / 24A446`: `NOT_FOUND_IN_REVIEWED_SOURCES`.
 - Physical root SSH, arbitrary DEB installation, and reboot persistence for this target: `NOT_VALIDATED`.
 - No device was modified, no firmware was restored, and no PR was merged.
+
+
+## Research continuation — darwin-vm compatibility boundary and fresh GitHub search — 2026-10-17
+
+### Newly cross-checked upstream evidence
+
+- Upstream `jprx/darwin-vm` README lists iPhone 16 (`iPhone17,3`, `t8140`) as tested with **iOS 27.0 beta 8** and iOS 26.6. It describes a minimal virtualized Darwin environment with a root shell, not a full iPhone emulator.
+- The same README explains that the guest lacks normal iPhone functionality such as the full GUI, Wi-Fi, Bluetooth, and graphics. VM root is therefore not evidence of physical-device root.
+- The upstream table does **not** establish an exact boot of iOS 27.0.1 build `24A446` on the target. Exact-build VM boot remains `NOT_VALIDATED` unless a reproducible run log and hashes for the actual inputs are attached.
+- Fresh GitHub searches for `iPhone17,3 T8140 root SSH jailbreak 24A446`, `iOS 27.0.1 exploit kernel privilege escalation T8140`, and a public Calif source release found no new target-specific public exploit or reproducible package. Search results are not exhaustive proof of nonexistence.
+
+### Source
+
+- `https://github.com/jprx/darwin-vm/blob/main/README.md`
+- `https://github.com/jprx/qemu-sptm`
+
+### Updated verdict
+
+| Requirement | Status |
+|---|---|
+| iPhone 16 listed in darwin-vm's iOS 27 beta 8 matrix | `UPSTREAM_REPORTED` |
+| Exact target build 24A446 booted in VM with retained logs/hashes | `NOT_VALIDATED` |
+| Physical iPhone 16 / T8140 jailbreak tool publicly available | `NOT_FOUND_IN_REVIEWED_SOURCES` |
+| Physical root SSH, arbitrary DEB installation, untethered persistence | `NOT_VALIDATED` |
+
+No exploit was executed, no binary was run, no firmware was restored, and no physical device was modified. Continue with read-only firmware provenance and static-analysis work; do not promote VM support, sandbox file access, or matching OS build numbers into a jailbreak claim.
