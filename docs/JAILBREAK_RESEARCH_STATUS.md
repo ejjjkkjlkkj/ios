@@ -1012,3 +1012,33 @@ Recherche publique GitLab sur `iOS 27`, `24A446`, `T8140` et jailbreak : aucun d
 ### Décision
 
 Ne pas porter directement des offsets ou des patches A12/A13 vers A18. La suite utile est de rechercher les sources primaires, les changements de code documentés et les artefacts reproductibles pour `T8140 / D47AP`, puis d'effectuer une analyse statique en lecture seule des composants du firmware exact. Aucun payload n'a été exécuté, aucun IPSW restauré et aucun appareil physique modifié pendant cette recherche.
+
+
+## Recherche élargie — GitHub, GitLab et compatibilité VM exacte — 2026-10-17
+
+### Nouvelle preuve technique trouvée sur GitHub
+
+- Dépôt : https://github.com/Lakr233/vphone-cli
+- Guide de compatibilité : https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md
+- Issue de suivi : https://github.com/Lakr233/vphone-cli/issues/596
+- Analyse du correctif : https://github.com/Lakr233/vphone-cli/blob/main/Research/Firmware/txm_selector24_cms_gate.md
+
+Le guide documente que le profil invité `iPhone17,3` + iOS 27.0.1 (`24A446`) peut démarrer dans l'environnement PCC/cloudOS pris en charge après le correctif `txm-boot-precheck_admission`, inclus à partir du bundle 2.6.0. L'issue #596 contient des essais et logs de démarrage de VM. Le guide de création précise toutefois que le flux public ne fournit pas automatiquement Sileo, apt, TrollStore ni serveur SSH. Ce résultat améliore la connaissance de la compatibilité **virtualisée** exacte, mais ne prouve aucun accès root sur le téléphone physique.
+
+### Recherches supplémentaires
+
+- Recherche GitHub de dépôts nommés explicitement autour de `iOS 27 jailbreak T8140` et `iPhone 16 jailbreak iOS 27` : aucun dépôt correspondant n'a été retourné par la recherche de dépôts.
+- Recherche GitHub de code pour `24A446 T8140` et `iPhone17,3 root SSH` : résultats pertinents principalement liés à `vphone-cli` et à ses correctifs de démarrage d'invité; aucun outil de jailbreak physique ciblant l'iPhone 16 n'a été identifié.
+- Recherche GitHub d'issues `24A446 jailbreak` et de commits `iOS 27 jailbreak` : des résultats non ciblés/historiques apparaissent; aucune chaîne physique reproductible pour `D47AP / T8140` n'a été établie.
+- Recherche web ciblée GitLab pour `iOS 27`, `24A446`, `T8140`, `iPhone 16` et jailbreak : aucun dépôt public pertinent n'a été identifié dans les résultats examinés. Recherche non exhaustive; aucun résultat ne permet de conclure que des dépôts privés ou non indexés n'existent pas.
+
+### Statut corrigé
+
+| Élément | Statut |
+|---|---|
+| iPhone17,3 / 24A446 démarrable dans la VM PCC/cloudOS selon le guide vphone-cli | `UPSTREAM_REPORTED_VM_ONLY` |
+| SSH root sur l'iPhone physique iPhone16 / T8140 / 24A446 | `NOT_VALIDATED` |
+| Chaîne de jailbreak physique publique, reproductible et spécifique à T8140 | `NOT_FOUND_IN_REVIEWED_PUBLIC_RESULTS` |
+| SSH root, installation DEB arbitraire et persistance physique | `NOT_VALIDATED` |
+
+Aucun payload n'a été exécuté sur l'appareil physique, aucun IPSW n'a été restauré et aucune modification du téléphone n'a été effectuée. Cette recherche porte sur les sources publiques et la documentation; elle n'est pas une preuve exhaustive d'absence de vulnérabilité.
