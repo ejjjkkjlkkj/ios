@@ -977,3 +977,38 @@ No exploit was executed, no binary was run, no firmware was restored, and no phy
 Keep monitoring Calif's official post and linked technical releases. When a release appears, first verify its provenance, license, supported product identifiers/builds, published hashes, and prerequisites; then update the target compatibility matrix. Do not run an unverified payload or restore/modify the phone based only on a headline or same-build claim.
 
 No exploit or payload was executed. No physical device was modified. This report update records public-source research only.
+
+
+## Recherche prioritaire GitHub + GitLab — 2026-10-17
+
+### Dépôts GitHub vérifiés directement
+
+- **Xplo8E/Liter8** — https://github.com/Xplo8E/Liter8  
+  Le README revendique un démarrage avec SSH root, apt et Sileo sur iPhone 11 (`n104ap`) via une chaîne tethered qui exige un Mac et le mode pwn DFU. Pour iOS 27.0.1 / `24A446`, la ligne « run » concerne l'iPhone 11 uniquement; les profils iPhone 11 Pro/Pro Max sont indiqués expérimentaux. Le dépôt dit explicitement ne pas revendiquer la prise en charge d'autres appareils. **Ne démontre pas la compatibilité iPhone 16 / T8140.**
+
+- **Cyber-Scholar/usbliter8** — https://github.com/Cyber-Scholar/usbliter8  
+  Outil de patch-finding iBoot/iBSS/iBEC annoncé pour les appareils A12/A13. Les appareils testés listés sont des appareils A12/A13; l'iPhone 16 A18/T8140 est hors périmètre déclaré. Ces résultats ne sont donc pas une chaîne exploitable pour notre cible.
+
+- **Lakr233/vphone-cli** — https://github.com/Lakr233/vphone-cli/blob/main/Documents/Guides/compatibility.md  
+  Le guide distingue les démarrages de machines virtuelles et indique un correctif TXM pour démarrer le profil invité iPhone17,3 / 27.0.1 avec l'image cloudOS utilisée par le projet. C'est une validation d'invité virtualisé, pas un jailbreak de l'iPhone physique.
+
+- **vvirei333/ABrake27** — https://github.com/vvirei333/ABrake27/blob/main/docs/WHITEPAPER.md  
+  Le document se présente comme une analyse statique AMFI et VFS sur iPhone 13 / A15 / T8110, comparant 24A446 à une bêta ultérieure. Il déclare ne pas avoir exécuté d'exploit ni flashé d'appareil. Les affirmations du document ne sont pas une preuve de chaîne de jailbreak, et le matériel cible diffère de notre iPhone 16 / A18 / T8140. À conserver comme piste de recherche statique seulement, pas comme vulnérabilité validée pour notre cible.
+
+### Résultat GitLab
+
+Recherche publique GitLab sur `iOS 27`, `24A446`, `T8140` et jailbreak : aucun dépôt public actuel trouvé dans les résultats consultés qui fournisse une chaîne reproductible pour l'iPhone 16 / 24A446. Les résultats visibles incluent notamment des projets historiques iOS 13; ils ne répondent pas à la cible. Cette recherche n'est pas une preuve exhaustive d'absence.
+
+### Matrice mise à jour
+
+| Piste | État pour iPhone 16 / `iPhone17,3 / D47AP / T8140 / 24A446` |
+|---|---|
+| Liter8 / usbliter8 | `NON_COMPATIBLE_DÉMONTRÉ` — périmètre A12/A13 ou iPhone 11; aucun port A18 validé |
+| vphone-cli / darwin-vm | `VM_ONLY` — ne prouve pas l'accès root sur l'appareil physique |
+| ABrake27 AMFI/VFS | `RESEARCH_LEAD_UNVERIFIED` — analyse déclarée sur iPhone 13/T8110, pas une chaîne pour T8140 |
+| GitLab public | `NO_TARGET_SPECIFIC_REPRODUCIBLE_CHAIN_FOUND` dans les résultats examinés |
+| SSH root physique, installation DEB arbitraire, persistance après redémarrage | `NOT_VALIDATED` |
+
+### Décision
+
+Ne pas porter directement des offsets ou des patches A12/A13 vers A18. La suite utile est de rechercher les sources primaires, les changements de code documentés et les artefacts reproductibles pour `T8140 / D47AP`, puis d'effectuer une analyse statique en lecture seule des composants du firmware exact. Aucun payload n'a été exécuté, aucun IPSW restauré et aucun appareil physique modifié pendant cette recherche.
