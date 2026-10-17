@@ -1075,3 +1075,31 @@ Le README du projet déclare explicitement que le seul appareil revendiqué comm
 | SSH root physique, DEB arbitraires et persistance sur la cible | `NOT_VALIDATED` |
 
 Aucun payload n'a été exécuté sur le téléphone cible, aucun IPSW restauré et aucune modification physique effectuée.
+## Recherche complémentaire — Calif officiel et darwin-vm — 2026-10-17
+
+### Source primaire Calif
+
+- Publication Calif : https://blog.calif.io/p/iphone
+- Compte rendu daté du 16 octobre : https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+
+La page officielle Calif indique que les démonstrations présentées à Hexacon seront publiées « en temps voulu ». Elle ne contient pas, à la date de cette vérification, de code, de noms de vulnérabilités ou de procédure reproductible. Les comptes rendus décrivent l'iPhone 18 Pro (iPhone19,2 / T8160) sous 27.0.1, avec accès root SSH après redémarrage. La présentation ne prouve pas la compatibilité avec l'iPhone 16 / T8140.
+
+### darwin-vm : root shell sur le profil iPhone 16, mais seulement en VM
+
+- Dépôt : https://github.com/jprx/darwin-vm
+- Script de préparation du firmware : https://github.com/jprx/darwin-vm/blob/main/get_files.sh
+
+Le README répertorie un profil iPhone 16 (`iPhone17,3`, `t8140`) démarrant sous iOS 27.0 (`24A437`) dans QEMU, avec shell root invité. Il précise explicitement que ce n'est pas un émulateur complet d'iPhone. La matrice ne revendique pas un test iOS 27.0.1 (`24A446`) pour ce profil. Cette piste peut aider à l'analyse du noyau Darwin et aux essais de programmes en environnement contrôlé, mais le shell root de la VM n'est pas une élévation de privilèges sur le téléphone physique.
+
+### Conclusion après cette recherche
+
+| Élément | Statut |
+|---|---|
+| Calif : jailbreak untethered sur iPhone 18 Pro / 27.0.1 | `REPORTED_DEMO_NO_PUBLIC_TOOL` |
+| Publication officielle d'une chaîne Calif reproductible | `NOT_YET_PUBLISHED_IN_REVIEWED_SOURCE` |
+| darwin-vm : profil iPhone 16 / T8140 démarrant sous iOS 27.0 beta 8 / 24A5430a ou iOS 27.0 / 24A437 selon la version du dépôt consultée | `VM_ONLY` |
+| darwin-vm : validation iOS 27.0.1 / 24A446 sur cible physique | `NOT_VALIDATED` |
+| Jailbreak physique reproductible iPhone 16 / D47AP / T8140 / 24A446 | `NOT_FOUND_IN_REVIEWED_PUBLIC_RESULTS` |
+| SSH root physique, DEB arbitraires et persistance sur la cible | `NOT_VALIDATED` |
+
+Recherche limitée aux sources publiques consultées; elle ne prouve pas l'absence de travaux privés ou non indexés. Aucun payload n'a été exécuté sur le téléphone, aucun IPSW restauré et aucune modification physique effectuée.
