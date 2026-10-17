@@ -1042,3 +1042,36 @@ Le guide documente que le profil invité `iPhone17,3` + iOS 27.0.1 (`24A446`) pe
 | SSH root, installation DEB arbitraire et persistance physique | `NOT_VALIDATED` |
 
 Aucun payload n'a été exécuté sur l'appareil physique, aucun IPSW n'a été restauré et aucune modification du téléphone n'a été effectuée. Cette recherche porte sur les sources publiques et la documentation; elle n'est pas une preuve exhaustive d'absence de vulnérabilité.
+
+## Nouvelle recherche — sources primaires et statut Liter8 — 2026-10-17
+
+### Calif / Hexacon : percée réelle, mais aucun outil publié
+
+- Publication primaire de Calif : https://blog.calif.io/p/iphone
+- La publication du 16 octobre 2026 annonce plusieurs démonstrations et dit que les éléments seront publiés ultérieurement. Elle ne fournit ni chaîne d'exploitation, ni code, ni compatibilité iPhone 16.
+- Compte rendu : https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+
+La démonstration rapportée concerne un iPhone 18 Pro (iPhone19,2, puce T8160) sur iOS 27.0.1 (24A446), avec accès root SSH restauré après redémarrage. Le même numéro de build ne signifie pas que la chaîne fonctionne sur un iPhone 16 : les puces, les composants de démarrage et les profils matériels diffèrent. Aucun port T8140 n'est publié dans les sources consultées.
+
+### Liter8 : preuve plus précise du périmètre
+
+- Dépôt et tableau de compatibilité : https://github.com/Xplo8E/Liter8
+- Issue utilisateur : https://github.com/Xplo8E/Liter8/issues/16
+
+Le README du projet déclare explicitement que le seul appareil revendiqué comme validé est l'iPhone 11 (n104ap), avec démarrage tethered via Mac et pwnDFU; il liste l'iPhone 11 Pro/Pro Max comme expérimentaux. L'issue #16 rapporte un essai iPhone 11 Pro sous 27.0.1, mais mentionne un écran noir/crash après environ cinq minutes. Cela ne constitue pas une validation stable du Pro et ne donne aucune preuve pour A18/T8140. Le projet ne peut donc pas être présenté comme solution pour l'iPhone 16.
+
+### État de recherche actualisé
+
+- Recherche GitHub de dépôts, code, issues et commits autour de iPhone17,3, T8140, 24A446 et jailbreak : résultats ciblés principalement sur la VM vphone-cli, le projet Liter8 limité à A12/A13, et des dépôts sans chaîne physique reproductible établie pour T8140.
+- Recherche web ciblée de la publication Calif et des dépôts GitHub/GitLab : aucune publication d'outil Calif, aucun exploit T8140 reproductible et aucune confirmation de SSH root physique sur iPhone 16 trouvés dans les résultats examinés. Cela ne prouve pas l'absence de dépôts privés ou non indexés.
+
+| Critère | Statut au 2026-10-17 |
+|---|---|
+| Jailbreak untethered démontré publiquement sur iPhone 18 Pro / T8160 | `REPORTED_DEMO_NO_PUBLIC_TOOL` |
+| Compatibilité de la démonstration Calif avec iPhone 16 / T8140 | `NOT_ESTABLISHED` |
+| Liter8 sur iPhone 11 / iOS 27.0.1 | `UPSTREAM_REPORTED_TETHERED` |
+| Liter8 sur iPhone 11 Pro / 27.0.1 | `EXPERIMENTAL_UNSTABLE_REPORT` |
+| Chaîne physique reproductible iPhone 16 / D47AP / T8140 / 24A446 | `NOT_FOUND_IN_REVIEWED_PUBLIC_RESULTS` |
+| SSH root physique, DEB arbitraires et persistance sur la cible | `NOT_VALIDATED` |
+
+Aucun payload n'a été exécuté sur le téléphone cible, aucun IPSW restauré et aucune modification physique effectuée.
