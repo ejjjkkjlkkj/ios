@@ -1103,3 +1103,30 @@ Le README répertorie un profil iPhone 16 (`iPhone17,3`, `t8140`) démarrant sou
 | SSH root physique, DEB arbitraires et persistance sur la cible | `NOT_VALIDATED` |
 
 Recherche limitée aux sources publiques consultées; elle ne prouve pas l'absence de travaux privés ou non indexés. Aucun payload n'a été exécuté sur le téléphone, aucun IPSW restauré et aucune modification physique effectuée.
+
+## Construction from scratch — outil d'inventaire IPSW en lecture seule — 2026-10-17
+
+Faute de chaîne publique reproductible pour iPhone 16 / D47AP / T8140 / iOS 27.0.1 (24A446), un premier outil local d'analyse statique a été ajouté au dépôt :
+
+- `tools/ipsw_static_inventory.py` : calcule le SHA-256 de l'IPSW, vérifie l'intégrité ZIP, inventorie les chemins, tailles et CRC, et étiquette les entrées liées à kernelcache, DeviceTree, trustcache, dyld, SEP, iBoot et manifest.
+- `tests/test_ipsw_static_inventory.py` : tests unitaires pour un IPSW ZIP synthétique, un fichier invalide et un fichier absent.
+- Dépendances : bibliothèque standard Python uniquement.
+- Mode : lecture seule; aucune extraction sur disque, décryption, modification du firmware, connexion à l'appareil ou exécution de payload.
+
+### Utilisation
+
+```powershell
+python tools/ipsw_static_inventory.py "C:\\chemin\\vers\\iPhone17,3_27.0.1_24A446_Restore.ipsw" --output "$env:TEMP\\ipsw-inventory.json"
+python -m unittest tests.test_ipsw_static_inventory -v
+```
+
+### Validation honnête
+
+| Vérification | Statut |
+|---|---|
+| Outil et tests ajoutés à la branche | `PASS` |
+| Tests exécutés dans un environnement CI ou local pendant cette opération | `NOT_RUN` |
+| Exploit de noyau / contournement de signature construit | `NOT_IMPLEMENTED` |
+| Jailbreak physique T8140, SSH root, installation DEB et persistance | `NOT_VALIDATED` |
+
+Cet outil constitue une première brique d'analyse de firmware, pas un jailbreak. La suite sûre consiste à exploiter l'inventaire pour une analyse statique documentée et reproductible, puis à marquer séparément toute hypothèse, tout résultat de VM et toute validation physique. Aucun payload n'a été exécuté et aucun appareil n'a été modifié.
