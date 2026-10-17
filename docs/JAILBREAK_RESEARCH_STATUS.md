@@ -952,3 +952,28 @@ Sources:
 | Physical root SSH, arbitrary DEB installation, untethered persistence | `NOT_VALIDATED` |
 
 No exploit was executed, no binary was run, no firmware was restored, and no physical device was modified. Continue with read-only firmware provenance and static-analysis work; do not promote VM support, sandbox file access, or matching OS build numbers into a jailbreak claim.
+
+
+## Research continuation — Calif Hexacon demo and target compatibility — 2026-10-17
+
+### Fresh primary and secondary sources
+
+- Calif's own post, dated 2026-10-16, says it demonstrated four iPhone-related demos at Hexacon and that details will be released later: https://blog.calif.io/p/iphone
+- Decrypt's report of 2026-10-16 says Calif demonstrated an untethered iOS 27.0.1 jailbreak on an iPhone 18 Pro, with root access returning after reboot, but no public tool or vulnerability details were available at publication: https://decrypt.co/381177/hackers-jailbreak-iphone-18-pro-survives-reboot
+- The reported target is iPhone 18 Pro / `iPhone19,2` / `T8160`; PhoneBridge's target is iPhone 16 / `iPhone17,3` / `D47AP` / `T8140`. Same OS build does not prove cross-device exploit compatibility.
+
+### New assessment
+
+| Requirement or claim | Status |
+|---|---|
+| Calif publicly reported a live untethered jailbreak demo | `PRIMARY_ANNOUNCEMENT + SECONDARY_REPORT` |
+| Calif published a reproducible public jailbreak package/source | `NOT_FOUND_AS_OF_2026-10-17_REVIEW` |
+| Calif demo proves compatibility with iPhone 16 / T8140 | `NOT_DEMONSTRATED` |
+| Vulnerability chain and persistence mechanism publicly documented | `NOT_DISCLOSED_IN_REVIEWED_SOURCES` |
+| Physical iPhone 16 root SSH, DEB install, untethered persistence | `NOT_VALIDATED` |
+
+### Work decision
+
+Keep monitoring Calif's official post and linked technical releases. When a release appears, first verify its provenance, license, supported product identifiers/builds, published hashes, and prerequisites; then update the target compatibility matrix. Do not run an unverified payload or restore/modify the phone based only on a headline or same-build claim.
+
+No exploit or payload was executed. No physical device was modified. This report update records public-source research only.
