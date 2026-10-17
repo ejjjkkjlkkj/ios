@@ -1130,3 +1130,33 @@ python -m unittest tests.test_ipsw_static_inventory -v
 | Jailbreak physique T8140, SSH root, installation DEB et persistance | `NOT_VALIDATED` |
 
 Cet outil constitue une première brique d'analyse de firmware, pas un jailbreak. La suite sûre consiste à exploiter l'inventaire pour une analyse statique documentée et reproductible, puis à marquer séparément toute hypothèse, tout résultat de VM et toute validation physique. Aucun payload n'a été exécuté et aucun appareil n'a été modifié.
+
+
+## Outil IPSW renforcé pendant le téléchargement — 2026-10-17
+
+L'outil local `tools/ipsw_static_inventory.py` a été étendu avant réception de l'IPSW :
+
+- lecture de `BuildManifest.plist` directement dans l'archive ZIP, sans extraire de fichiers ;
+- collecte des versions/builds, types de produits et identités de build, notamment classe d'appareil et configuration de carte ;
+- repérage des chemins déclarés pour KernelCache, DeviceTree et StaticTrustCache ;
+- comparaison SHA-256 facultative, avec option de comparaison à la valeur de référence publiée pour `iPhone17,3 / 27.0.1 / 24A446` : `fc87bb9da8c03d0154d87531950f4a170195f6663ee5208653fa7a26bafb9469`;
+- tests étendus aux métadonnées du manifest, au hash correct/incorrect et au format du hash.
+
+Commande après la fin du téléchargement (PowerShell, adapter uniquement le chemin réel du fichier) :
+
+```powershell
+python tools/ipsw_static_inventory.py "D:\\CHEMIN\\iPhone17,3_27.0.1_24A446_Restore.ipsw" --check-iphone16-27.0.1 --output "$env:TEMP\\iphone16-24A446-inventory.json"
+python -m unittest tests.test_ipsw_static_inventory -v
+```
+
+La vérification de hash est une comparaison avec une référence tierce publiée, pas une signature cryptographique d'Apple. Si le hash échoue, ne pas utiliser l'archive avant d'avoir vérifié le téléchargement et la source. Le parseur de manifest peut confirmer les métadonnées annoncées par l'archive, mais pas l'authenticité du firmware à lui seul.
+
+| Élément | Statut |
+|---|---|
+| Lecture du manifest sans extraction sur disque | `IMPLEMENTED` |
+| Comparaison SHA-256 avec référence publiée | `IMPLEMENTED` |
+| Tests étendus ajoutés au dépôt | `PASS — ADDED, NOT EXECUTED` |
+| Tests exécutés dans CI / environnement local pendant cette session | `NOT_RUN` |
+| Analyse de noyau / vulnérabilité / jailbreak physique | `NOT_YET_VALIDATED` |
+
+Aucun firmware n'a été téléchargé ou traité par cette session, aucune restauration n'a été lancée et aucun appareil n'a été modifié.
