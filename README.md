@@ -34,6 +34,10 @@ Cet outil ne déchiffre, ne modifie ni n'exploite le firmware. Un inventaire ne 
 Une application iOS standard ne peut pas obtenir librement un shell root, activer un serveur SSH système, contourner la signature de code ou installer arbitrairement n’importe quelle application. **SSH root sans jailbreak n’est possible que si l’appareil dispose déjà d’un service root autorisé**; l’application ne peut pas créer ce privilège. Les installations IPA restent dépendantes de méthodes de signature/distribution compatibles. Les fichiers DEB ne sont pas des applications installables normalement sur iOS standard.
 
 ## Documentation
+- [Récupération du kernelcache iPhone 16 / iOS 27.0.1](docs/IPHONE16_IOS27_KERNEL.md)
+- [Intégration et audit statique Darwin VM](docs/DARWIN_VM_INTEGRATION.md) — la VM n'est pas un jailbreak physique.
+- [État de la recherche jailbreak iPhone 16 / iOS 27.0.1](docs/JAILBREAK_RESEARCH_STATUS.md) — registre de preuves, blocages et critères de validation.
+- Audit local read-only de checkout Darwin VM : `python tools/darwin_vm_audit.py <chemin-darwin-vm> --out artifacts/darwin-vm-audit.json`
 
 - [Vision produit et critères de validation](docs/PRODUCT_SCOPE.md)
 - [Architecture](docs/ARCHITECTURE.md)
