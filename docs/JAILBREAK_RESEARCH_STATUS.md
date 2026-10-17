@@ -1160,3 +1160,14 @@ La vérification de hash est une comparaison avec une référence tierce publié
 | Analyse de noyau / vulnérabilité / jailbreak physique | `NOT_YET_VALIDATED` |
 
 Aucun firmware n'a été téléchargé ou traité par cette session, aucune restauration n'a été lancée et aucun appareil n'a été modifié.
+
+
+## Référence de différentiel public — limites de transposition — 2026-10-17
+
+Le dépôt public `blacktop/ipsw-diffs` contient un rapport comparant iOS 27.0 (24A437) et 27.0.1 (24A446) pour **iPhone 18 Pro / iPhone19,2**, pas pour la cible iPhone 16. Il signale notamment des mises à jour de composants WebKit et de plusieurs exécutables système, tandis que la version de noyau affichée reste identique dans ce rapport. Cette observation ne doit pas être extrapolée à `iPhone17,3 / T8140` : le prochain rapport doit être calculé à partir du manifest et des composants exacts de l'IPSW iPhone 16 téléchargé.
+
+Référence : https://github.com/blacktop/ipsw-diffs/blob/main/iOS/27_0_24A437_vs_27_0_1_24A446/README.md
+
+Référence publiée pour le téléchargement iPhone 16 : build `24A446`, appareil `iPhone17,3`, carte `D47AP`, plateforme `t8140`, SHA-256 attendu `fc87bb9da8c03d0154d87531950f4a170195f6663ee5208653fa7a26bafb9469`. La valeur doit être comparée au fichier effectivement reçu; elle ne remplace pas une vérification de provenance.
+
+Suite prévue à la réception : vérifier le hash, l'intégrité ZIP et les identifiants du BuildManifest; sauvegarder le JSON de résultat; ensuite examiner statiquement les métadonnées des composants pertinents sans exécution ni modification du téléphone.
